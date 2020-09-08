@@ -1,26 +1,32 @@
 import React from "react";
 
-import { Dispatcher, Constants } from "../../../flux";
+import {Constants, Dispatcher, Store} from "../../../flux";
 
 class NavbarToggle extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleClick = this.handleClick.bind(this);
+    this.triggerDevtools = this.triggerDevtools.bind(this);
+
+    this.state = {
+      devMode: Store.getDevMode()
+    }
   }
 
-  handleClick() {
+  triggerDevtools() {
     Dispatcher.dispatch({
-      actionType: Constants.TOGGLE_SIDEBAR
+      actionType: Constants.TOGGLE_DEVTOOLS
     });
+    this.setState({...this.state, devMode: Store.getDevMode() } )
   }
 
   render() {
     return (
-      <nav className="nav">
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-        <a href="#" onClick={this.handleClick} className="nav-link nav-link-icon toggle-sidebar d-sm-inline d-md-inline d-lg-none text-center">
-          <i className="material-icons">&#xE5D2;</i>
+      <nav>
+        {/* font: https://material.io/resources/icons/?icon=build&style=baseline*/ }
+        <a href="#" onClick={this.triggerDevtools} className="nav-link nav-link-icon d-sm-inline text-center">
+          <i className="material-icons" title={this.state.devMode ? "切换到普通模式" : "切换到开发者模式"}>
+            {this.state.devMode ? "table_view" : "developer_board"}</i>
         </a>
       </nav>
     )

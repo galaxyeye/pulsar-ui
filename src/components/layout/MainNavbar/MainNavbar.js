@@ -1,13 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { Container, Navbar } from "shards-react";
+import {Container, Navbar} from "shards-react";
 
 import NavbarSearch from "./NavbarSearch";
-import NavbarNav from "./NavbarNav/NavbarNav";
 import NavbarToggle from "./NavbarToggle";
+import NavbarNav from "./NavbarNav/NavbarNav";
 
-const MainNavbar = ({ layout, stickyTop }) => {
+{/* font: https://material.io/resources/icons/?icon=build&style=baseline*/ }
+
+const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
   const classes = classNames(
     "main-navbar",
     "bg-white",
@@ -18,7 +20,7 @@ const MainNavbar = ({ layout, stickyTop }) => {
     <div className={classes}>
       <Container className="p-0">
         <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
-          <NavbarSearch />
+          <NavbarSearch defaultUrl={defaultUrl} />
           <NavbarNav />
           <NavbarToggle />
         </Navbar>

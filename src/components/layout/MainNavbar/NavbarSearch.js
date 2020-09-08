@@ -1,13 +1,7 @@
 import React from "react";
-import {
-  Form,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  FormInput
-} from "shards-react";
+import {Form, FormInput, InputGroup, InputGroupAddon, InputGroupText} from "shards-react";
 
-export default () => (
+export default ({defaultUrl}) => (
   <Form className="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
     <InputGroup seamless className="ml-3">
       <InputGroupAddon type="prepend">
@@ -17,7 +11,8 @@ export default () => (
       </InputGroupAddon>
       <FormInput
         className="navbar-search"
-        placeholder="Search for something..."
+        placeholder="输入一个链接 ..."
+        defaultValue={defaultUrl}
       />
     </InputGroup>
   </Form>

@@ -12,6 +12,8 @@ import ComponentsOverview from "./views/ComponentsOverview";
 import Tables from "./views/Tables";
 import BlogPosts from "./views/BlogPosts";
 import MinimalLayout from "./layouts/Minimal";
+import HarvestPage from "./views/HarvestPage";
+import HarvestLayout from "./layouts/Harvest";
 
 export default [
   {
@@ -39,6 +41,11 @@ export default [
     path: "/analyse-page",
     layout: MinimalLayout,
     component: AnalysePage
+  },
+  {
+    path: "/auto-web-mining",
+    layout: HarvestLayout,
+    component: HarvestPage
   },
   {
     path: "/errors",

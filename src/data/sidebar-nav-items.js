@@ -22,9 +22,9 @@ export default function() {
       to: "/analyse-page",
     },
     {
-      title: "Page Sketch",
-      htmlBefore: '<i class="material-icons">note_add</i>',
-      to: "/page-sketch",
+      title: "Auto Web Mining",
+      htmlBefore: '<i class="material-icons">view_module</i>',
+      to: "/auto-web-mining",
     },
     {
       title: "Forms & Components",

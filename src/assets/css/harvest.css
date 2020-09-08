@@ -1,0 +1,29 @@
+div.tables .message i {
+  font-size: x-large;
+  font-weight: bolder;
+}
+
+div.tables .message i.no {
+  margin-right: 10px;
+}
+
+div.tables .message b {
+  font-weight: bolder;
+}
+
+div.tables .message em {
+  font-size: x-large;
+  color:darkgreen;
+  font-weight: bolder;
+}
+
+div.table-container {
+  overflow-x: scroll;
+}
+
+table.table-flat td, table.table-flat th {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

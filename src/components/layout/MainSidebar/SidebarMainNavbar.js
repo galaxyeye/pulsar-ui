@@ -40,7 +40,7 @@ class SidebarMainNavbar extends React.Component {
               />
               {!hideLogoText && (
                 <span className="d-none d-md-inline ml-1">
-                  Shards Dashboard
+                  柏拉图 - 自动网页挖掘
                 </span>
               )}
             </div>

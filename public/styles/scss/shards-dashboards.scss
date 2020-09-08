@@ -12,7 +12,7 @@
 @import "overrides";
 
 // Base Shards UI Kit
-@import "../../node_modules/shards-ui/src/scss/shards";
+@import "../../../node_modules/shards-ui/src/scss/shards";
 
 /* Shards Dashboards Lite Styles */
 
@@ -53,3 +53,5 @@
 // Components
 @import "components/card-post";
 @import "components/error";
+
+@import "components/html-renderer";
