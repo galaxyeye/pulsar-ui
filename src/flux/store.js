@@ -1,15 +1,18 @@
-import { EventEmitter } from "events";
+import {EventEmitter} from "events";
 
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import getHarvestStatus from "../data/harvest-status";
+import getAuth from "../data/userAuth";
 
 let _store = {
   menuVisible: false,
+  apiHost: "http://localhost:8182",
+  auth: getAuth(),
   navItems: getSidebarNavItems(),
   harvestStatus: getHarvestStatus(),
-  devMode: false
+  devMode: true
 };
 
 class Store extends EventEmitter {
@@ -54,12 +57,20 @@ class Store extends EventEmitter {
     return _store.navItems;
   }
 
+  getAuth() {
+    return _store.auth;
+  }
+
   getHarvestStatus() {
     return _store.harvestStatus;
   }
 
   getDevMode() {
     return _store.devMode;
+  }
+
+  getApiHost() {
+    return _store.apiHost;
   }
 
   addChangeListener(callback) {

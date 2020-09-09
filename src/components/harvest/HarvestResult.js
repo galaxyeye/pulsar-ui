@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Col, Container, Row} from "shards-react";
 
-import FullPageCard from "./FullPageCard";
-import PageTableCard from "./PageTableCard";
+import FullPageCard from "./cards/FullPageCard";
+import PageTableCard from "./cards/PageTableCard";
 import classNames from "classnames";
 
 class HarvestResult extends React.Component {
@@ -34,15 +34,15 @@ class HarvestResult extends React.Component {
     return (<Container className={"tables"} fluid>
         <Row>
           <Col className={leftColClasses}>
-            {tables.map((table, tableIndex) => (
-              <PageTableCard table={table} tableIndex={tableIndex}/>
+            {tables.filter((table) => !table.tableData.isCombined).map((table, tableIndex) => (
+              <PageTableCard key={tableIndex} table={table} tableIndex={tableIndex}/>
             ))}
           </Col>
           <Col className={rightColClasses}>
             <FullPageCard
               url={portalUrl}
-              fullPageCardCollapse={this.state.fullPageCardCollapse}
-              toggleFullPageCardCollapse={this.toggleFullPageCardCollapse}
+              collapse={this.state.fullPageCardCollapse}
+              toggleCollapse={this.toggleFullPageCardCollapse}
             />
           </Col>
         </Row>

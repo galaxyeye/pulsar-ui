@@ -1,15 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Card, CardBody} from "shards-react";
-import FlatTable from "./FlatTable";
+import FlatTable from "../../../lib/components/FlatTable";
 import classNames from "classnames";
 
 class PageTableCard extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     let { table, tableIndex } = this.props
     let cardClass = classNames(
