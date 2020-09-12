@@ -6,12 +6,10 @@ import {DefaultLayout} from "./layouts";
 import BlogOverview from "./views/BlogOverview";
 import UserProfileLite from "./views/UserProfileLite";
 import AddNewPost from "./views/AddNewPost";
-import AnalysePage from "./views/AnalysePage";
 import Errors from "./views/Errors";
 import ComponentsOverview from "./views/ComponentsOverview";
 import Tables from "./views/Tables";
 import BlogPosts from "./views/BlogPosts";
-import MinimalLayout from "./layouts/Minimal";
 import HarvestPage from "./views/HarvestPage";
 import HarvestLayout from "./layouts/Harvest";
 
@@ -20,7 +18,7 @@ export default [
     path: "/",
     exact: true,
     layout: DefaultLayout,
-    component: () => <Redirect to="/blog-overview" />
+    component: () => <Redirect to="home.html" />
   },
   {
     path: "/blog-overview",
@@ -36,11 +34,6 @@ export default [
     path: "/add-new-post",
     layout: DefaultLayout,
     component: AddNewPost
-  },
-  {
-    path: "/analyse-page",
-    layout: MinimalLayout,
-    component: AnalysePage
   },
   {
     path: "/auto-web-mining",

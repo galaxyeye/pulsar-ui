@@ -2,21 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Container} from "shards-react";
 
-import MainNavbar from "../components/layout/MainNavbar/MainNavbar";
-import MainFooter from "../components/layout/MainFooter";
-
-import TopbarActions from "../components/analyse-page/TopbarActions";
+import "../assets/css/vesperr-style.css"
 
 const MinimalLayout = ({ children, noNavbar, noFooter }) => (
   <Container fluid>
-    <MainNavbar />
-    <TopbarActions />
-
-    <div id='pulsarHtmlWrapper' className='scrapping wrap'>
-      {children}
-    </div>
-
-    {!noFooter && <MainFooter />}
+    {children}
   </Container>
 );
 
