@@ -85,7 +85,10 @@ class HarvestPage extends React.Component {
       ++component.tick
 
       HarvestApi.get(request).then((taskStatus) => {
-        console.log(taskStatus.statusCode)
+        console.log("status:  " + taskStatus.statusCode
+          + " " + taskStatus.ntotalPages
+          + " " + taskStatus.nsuccessPages)
+        console.log(JSON.stringify(taskStatus))
 
         let message = ""
         let statusCode = taskStatus.statusCode
@@ -95,7 +98,7 @@ class HarvestPage extends React.Component {
           message = "分析中 ..."
         }
 
-        if (component.tick > 20) {
+        if (component.tick > 60) {
           message = "刷新试试"
         }
 
@@ -115,15 +118,17 @@ class HarvestPage extends React.Component {
   }
 
   getTables() {
-    if (this.state.harvestTaskStatus.statusCode === 200) {
-      return this.state.harvestTaskStatus.result.tables.filter((table) => !table.tableData.isCombined)
+    let taskStatus = this.state.harvestTaskStatus
+    if (taskStatus.statusCode === 200) {
+      return taskStatus.result.tables.filter((table) => !table.tableData.isCombined)
     } else {
       return []
     }
   }
 
   render() {
-    let statusCode = this.state.harvestTaskStatus.statusCode
+    let taskStatus = this.state.harvestTaskStatus
+    let statusCode = taskStatus.statusCode
 
     return (
       <Row>
@@ -134,7 +139,7 @@ class HarvestPage extends React.Component {
           </Row>
 
           {
-            (statusCode !== 200) ? this.renderLoading() : this.renderHarvestResult()
+            (statusCode !== 200) ? this.renderLoading(taskStatus) : this.renderHarvestResult()
           }
         </Col>
       </Row>
@@ -157,23 +162,41 @@ class HarvestPage extends React.Component {
       )
   }
 
-  renderLoading() {
+  renderLoading(taskStatus) {
     return (
       <Container fluid>
         <Row className="page-loading align-items-center h-100">
           <div className="mx-auto">
-            <div className="jumbotron">
+            <div className="jumbotron text-center">
               <RingLoader
                 size={60}
                 color={"#36D7B7"}
+                css={"display: inline-block"}
                 loading={this.state.statusCode !== 200}
               />
+            </div>
+            <div className="jumbotron">
+              {
+                (taskStatus.ntotalPages == null || taskStatus.ntotalPages === 0)
+                ?
+                (<div>正在分析中 。。。</div>)
+                :
+                (
+                  (taskStatus.nsuccessPages >= taskStatus.ntotalPages) ? (<div>正在解读网页集。。。</div>) :
+                    (<div>正在访问第 {taskStatus.nsuccessPages}/{taskStatus.ntotalPages} 个网页
+                    - {formatPercentage(100 * taskStatus.nsuccessPages / taskStatus.ntotalPages)}</div>)
+                )
+              }
             </div>
           </div>
         </Row>
       </Container>
     )
   }
+}
+
+function formatPercentage(num) {
+  return Number(num / 100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:1})
 }
 
 export default HarvestPage;

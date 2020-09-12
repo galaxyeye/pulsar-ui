@@ -11,11 +11,23 @@ const HarvestStatus = ({ uuid, statusCode, result }) => (
 
 HarvestStatus.propTypes = {
   /**
-   * The portalUrl .
+   * The status code.
    */
   statusCode: PropTypes.number,
   /**
-   * The portalUrl .
+   * The total page to fetch.
+   */
+  nTotalPages: PropTypes.number,
+  /**
+   * The number of pages successfully to fetch.
+   */
+  nSuccessPages: PropTypes.number,
+  /**
+   * The number of pages failed to fetch.
+   */
+  nFailedPages: PropTypes.number,
+  /**
+   * The uuid of this task.
    */
   uuid: PropTypes.string,
   /**
@@ -25,9 +37,12 @@ HarvestStatus.propTypes = {
 };
 
 HarvestStatus.defaultProps = {
-  "statusCode": 404,
-  "uuid": "no-uuid",
-  "result": {}
+  statusCode: 404,
+  uuid: "no-uuid",
+  nTotalPages: 0,
+  nSuccessPages: 0,
+  nFailedPages: 0,
+  result: {}
 };
 
 export default HarvestStatus;

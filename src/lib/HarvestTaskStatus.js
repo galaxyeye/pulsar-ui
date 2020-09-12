@@ -41,7 +41,9 @@ export type HarvestTaskStatus = {
   statusCode: number,
   status: string,
   uuid: string,
-  result: HarvestResult
+  result: HarvestResult,
+  ntotalPages: number,
+  nsuccessPages: number
 }
 
 export function findSampleUrlFromTable(table: Table) {

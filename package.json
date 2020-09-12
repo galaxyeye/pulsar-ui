@@ -5,6 +5,7 @@
   "homepage": "./",
   "dependencies": {
     "@emotion/core": "^10.0.35",
+    "base64-url": "^2.3.3",
     "browser-sync": "^2.24.5",
     "buffer": "^5.6.0",
     "camelize": "^1.0.0",

@@ -7,6 +7,7 @@ import {Buffer} from "buffer";
 import {W3DocApi} from "../../../services";
 import {findSampleUrlFromTable} from "../../../lib/HarvestTaskStatus";
 import {defaultCardBodyClassName, defaultCardClassName} from "./common";
+const base64url = require('base64-url')
 
 class FragmentCard extends React.Component {
 
@@ -27,7 +28,7 @@ class FragmentCard extends React.Component {
       let sampleUrl = findSampleUrlFromTable(this.props.table)
       if (this.state.sampleUrl !== sampleUrl) {
         W3DocApi.get({
-          url: Buffer.from(sampleUrl).toString('base64'),
+          url: base64url.encode(sampleUrl),
           noStyle: true,
           noImg: true,
           noMedia: true,
@@ -35,14 +36,14 @@ class FragmentCard extends React.Component {
           fragmentCss: this.props.table.tableData.hyperPath,
           authToken: Store.getAuth().userToken
         }).then((w3doc) => {
-          this.setState({sampleUrl: sampleUrl, w3doc: w3doc})
+          this.setState({...this.state, sampleUrl: sampleUrl, w3doc: w3doc})
         }).catch(function (ex) {
           console.log('Response parsing failed. Error: ', ex);
         });
       }
     }
 
-    this.setState({collapse: !this.state.collapse});
+    this.setState({...this.state, collapse: !this.state.collapse});
   }
 
   render() {
