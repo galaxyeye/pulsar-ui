@@ -6,11 +6,11 @@ import HarvestResult from "../components/harvest/HarvestResult";
 import HarvestDevtools from "../components/harvest/HarvestDevtools";
 import {HarvestApi} from "../services";
 import PageTitle from "../components/common/PageTitle";
-import UsersOverview from "../components/blog/UsersOverview";
-import UsersByDevice from "../components/blog/UsersByDevice";
+import type {HarvestTaskStatus} from "../lib/HarvestTaskStatus";
+import {RingLoader} from "react-spinners";
 
 let auth = Store.getAuth()
-let harvestTask = {
+let harvestTaskRequest = {
   username: auth.username,
   authToken: auth.authToken,
   portalUrl: "https://www.amazon.com/Best-Sellers-Automotive/zgbs/automotive/ref=zg_bs_nav_0",
@@ -19,9 +19,7 @@ let harvestTask = {
   proxyLinks: true
 }
 
-let defaultTaskId = "5f0c0ed0-78b5-4255-992e-03649c6c20b3"
-
-let defaultHarvestStatus = {
+let defaultHarvestStatus: HarvestTaskStatus = {
   statusCode: 201,
   status: "CREATED",
   result: {
@@ -30,7 +28,7 @@ let defaultHarvestStatus = {
 }
 
 function getTaskStatusRequest(id) {
-  return {"username": harvestTask.username, "authToken": harvestTask.authToken, "id": id}
+  return {"username": harvestTaskRequest.username, "authToken": harvestTaskRequest.authToken, "id": id}
 }
 
 class HarvestPage extends React.Component {
@@ -39,13 +37,14 @@ class HarvestPage extends React.Component {
 
     // Set some state
     this.state = {
-      messageShown: false,
+      message: "加载中 ...",
       devMode: Store.getDevMode(),
-      harvestTask: harvestTask,
-      harvestStatus: defaultHarvestStatus,
+      harvestTaskRequest: harvestTaskRequest,
+      harvestTaskStatus: defaultHarvestStatus
     };
 
     this.timer = null;
+    this.tick = 0;
 
     this.onChange = this.onChange.bind(this);
     this.getHarvestTaskStatus = this.getHarvestTaskStatus.bind(this);
@@ -53,9 +52,9 @@ class HarvestPage extends React.Component {
   }
 
   componentWillMount() {
-    let task = this.state.harvestTask
+    let request = this.state.harvestTaskRequest
 
-    HarvestApi.query(task).then((taskId) => {
+    HarvestApi.query(request).then((taskId) => {
       console.log("Task id: " + taskId)
 
       this.setState({ taskId: taskId })
@@ -81,15 +80,33 @@ class HarvestPage extends React.Component {
 
   getHarvestTaskStatus(id) {
     let request = getTaskStatusRequest(id)
-    let parent = this
+    let component = this
     this.timer = setInterval(() => {
-      HarvestApi.get(request).then((harvestStatus) => {
-        console.log(harvestStatus.statusCode)
+      ++component.tick
 
-        this.setState({ harvestStatus: harvestStatus })
-        if (harvestStatus.statusCode === 200) {
-          console.log(harvestStatus.result.tables.length)
-          clearInterval(parent.timer)
+      HarvestApi.get(request).then((taskStatus) => {
+        console.log(taskStatus.statusCode)
+
+        let message = ""
+        let statusCode = taskStatus.statusCode
+        if (statusCode === 404) {
+          message = "加载中 ..."
+        } else if (statusCode === 201) {
+          message = "分析中 ..."
+        }
+
+        if (component.tick > 20) {
+          message = "刷新试试"
+        }
+
+        this.setState({
+          ...this.state,
+          message: message,
+          harvestTaskStatus: taskStatus
+        })
+
+        if (statusCode === 200 || component.tick > 20) {
+          clearInterval(component.timer)
         }
       }).catch(function (ex) {
         console.log('Response parsing failed. Error: ', ex);
@@ -98,63 +115,61 @@ class HarvestPage extends React.Component {
   }
 
   getTables() {
-    return this.state.harvestStatus.result.tables.columnsData.filter(column => column.cname.length > 0)
+    if (this.state.harvestTaskStatus.statusCode === 200) {
+      return this.state.harvestTaskStatus.result.tables.filter((table) => !table.tableData.isCombined)
+    } else {
+      return []
+    }
   }
 
   render() {
-    let statusCode = this.state.harvestStatus.statusCode
+    let statusCode = this.state.harvestTaskStatus.statusCode
 
     return (
-      <Container fluid className={"vw-100"}>
-        <Row>
-          <Col className="p-0">
-            <MainNavbar defaultUrl={this.state.harvestTask.portalUrl} stickyTop={true} devtoolsSwitch={true} />
+      <Row>
+        <Col className="p-0">
+          <MainNavbar defaultUrl={this.state.harvestTaskRequest.portalUrl} stickyTop={true} devtoolsSwitch={true} />
+          <Row noGutters className="page-header py-4">
+            <PageTitle title="柏拉图浏览器" subtitle={this.state.message} className="text-sm-left mb-3" />
+          </Row>
 
-            {
-              (statusCode !== 200) ? this.renderLoading() :
-                (this.state.devMode ? this.renderHarvestDevtools() : this.renderHarvestResult())
-            }
-          </Col>
-        </Row>
-      </Container>
+          {
+            (statusCode !== 200) ? this.renderLoading() : this.renderHarvestResult()
+          }
+        </Col>
+      </Row>
     )
   }
 
   renderHarvestResult() {
     return (
+      !this.state.devMode ?
       <HarvestResult
-        portalUrl={this.state.harvestTask.portalUrl}
-        args={this.state.harvestTask.args}
+        portalUrl={this.state.harvestTaskRequest.portalUrl}
+        args={this.state.harvestTaskRequest.args}
         tables={this.getTables()}
-      />)
-  }
-
-  renderHarvestDevtools() {
-    return (
-      <HarvestDevtools
-        portalUrl={this.state.harvestTask.portalUrl}
-        args={this.state.harvestTask.args}
-        tables={this.getTables()}
-      />)
+      /> :
+        <HarvestDevtools
+          portalUrl={this.state.harvestTaskRequest.portalUrl}
+          args={this.state.harvestTaskRequest.args}
+          tables={this.getTables()}
+        />
+      )
   }
 
   renderLoading() {
     return (
       <Container fluid>
-        <Row noGutters className="page-header py-4">
-          <PageTitle title="AI Aided Browser" subtitle="Dashboard" className="text-sm-left mb-3" />
-        </Row>
-
-        <Row>
-          {/* Users Overview */}
-          <Col lg="8" md="12" sm="12" className="mb-4">
-            <UsersOverview />
-          </Col>
-
-          {/* Users by Device */}
-          <Col lg="4" md="6" sm="12" className="mb-4">
-            <UsersByDevice />
-          </Col>
+        <Row className="page-loading align-items-center h-100">
+          <div className="mx-auto">
+            <div className="jumbotron">
+              <RingLoader
+                size={60}
+                color={"#36D7B7"}
+                loading={this.state.statusCode !== 200}
+              />
+            </div>
+          </div>
         </Row>
       </Container>
     )

@@ -13,6 +13,7 @@ const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
   const classes = classNames(
     "main-navbar",
     "bg-white",
+    "mb-1",
     stickyTop && "sticky-top"
   );
 

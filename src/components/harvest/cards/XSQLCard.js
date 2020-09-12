@@ -1,23 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  CardBody,
-  CardHeader,
-  Collapse,
-  FormGroup
-} from "shards-react";
-import HtmlContent from "../../analyse-page/HtmlContent";
+import {Card, CardBody, CardHeader, Collapse, FormGroup} from "shards-react";
 import {UnControlled as CodeMirror} from "react-codemirror2";
+import {defaultCardBodyClassName, defaultCardClassName} from "./common";
 
 class XSQLCard extends React.Component {
 
   constructor(props) {
     super(props);
     this.toggleCollapse = this.toggleCollapse.bind(this);
-    this.clearTimer = this.clearTimer.bind(this);
     this.state = {
       collapse: true
     };
@@ -33,7 +24,7 @@ class XSQLCard extends React.Component {
       this.timer = setInterval(function() {
         if (card.editor != null) {
           card.editor.refresh();
-          card.clearTimer()
+          clearInterval(card.timer)
         }
       }, 5);
     }
@@ -42,28 +33,22 @@ class XSQLCard extends React.Component {
   }
 
   componentWillUnmount() {
-    this.clearTimer()
-  }
-
-  clearTimer() {
-    if (this.timer != null) {
-      clearInterval(this.timer)
-      this.timer = null
-    }
+    clearInterval(this.timer)
   }
 
   render() {
     let card = this
     return (
-      <Card className={"my-1 shadow-none rounded-0 collapse show"}>
+      <Card className={defaultCardClassName()}>
         <CardHeader onClick={this.toggleCollapse}>
           AI 生成 X-SQL
         </CardHeader>
 
         <Collapse open={!this.state.collapse}>
-          <CardBody className="harvest-status__x-sql">
+          <CardBody className={defaultCardBodyClassName()}>
             <FormGroup>
               <CodeMirror
+                className={"harvest-status__x-sql"}
                 value={this.props.table.tableData.xsql}
                 options={{
                   mode: 'sql',
@@ -81,13 +66,13 @@ class XSQLCard extends React.Component {
               />
               {/*<FormTextarea value={table.tableData.xsql} rows={table.tableData.xsql.split("\n").length} />*/}
             </FormGroup>
-            <FormGroup>
-              <ButtonGroup>
-                <Button theme="white" type="submit">
-                  执行
-                </Button>
-              </ButtonGroup>
-            </FormGroup>
+            {/*<FormGroup>*/}
+            {/*  <ButtonGroup>*/}
+            {/*    <Button theme="white" type="submit">*/}
+            {/*      执行*/}
+            {/*    </Button>*/}
+            {/*  </ButtonGroup>*/}
+            {/*</FormGroup>*/}
           </CardBody>
         </Collapse>
       </Card>)

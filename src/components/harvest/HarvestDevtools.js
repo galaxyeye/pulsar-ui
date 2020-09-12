@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Col, Container, Row} from "shards-react";
+import {Col, Container, ListGroup, ListGroupItem, Row} from "shards-react";
 
 import "../../assets/css/harvest.css";
 
@@ -11,10 +11,9 @@ import 'codemirror/theme/idea.css';
 import 'codemirror/mode/sql/sql';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/addon/display/fullscreen';
-import classNames from "classnames";
-import FullPageCard from "./cards/FullPageCard";
+import BrowserCard from "./cards/BrowserCard";
 import PageTableCard from "./cards/PageTableCard";
-import SnapshotCard from "./cards/SnapshotCard";
+import FragmentCard from "./cards/FragmentCard";
 import XSQLCard from "./cards/XSQLCard";
 import CSSCard from "./cards/CSSCard";
 
@@ -23,44 +22,50 @@ class HarvestDevtools extends React.Component {
     super(props);
 
     this.state = {
-      fullPageCardCollapse: true
+      fullPageCardCollapse: true,
+      tableIndex: 0
     };
 
     this.toggleFullPageCardCollapse = this.toggleFullPageCardCollapse.bind(this);
+    this.onChooseTable = this.onChooseTable.bind(this);
   }
 
   toggleFullPageCardCollapse() {
-    this.setState({fullPageCardCollapse: !this.state.fullPageCardCollapse})
+    this.setState({...this.state, fullPageCardCollapse: !this.state.fullPageCardCollapse})
+  }
+
+  onChooseTable(tableIndex) {
+    this.setState({...this.state, tableIndex: tableIndex})
   }
 
   render() {
-    const leftColClasses = classNames(
-      "py-1 px-0 m-0",
-      this.state.fullPageCardCollapse ? "col-2" : "col-6"
-    );
-    const rightColClasses = classNames(
-      "px-0 m-0 control-panel",
-      this.state.fullPageCardCollapse ? "col-10" : "col-6"
-    );
+    let {tableIndex} = this.state
+    let {portalUrl, tables} = this.props
+    let table = tables[tableIndex]
 
     return (
       <Container className={"tables"} fluid>
         <Row>
-          <Col className={leftColClasses} id="pageViewContainer">
-            <FullPageCard
-              url={this.props.portalUrl}
-              collapse={this.state.fullPageCardCollapse}
-              toggleCollapse={this.toggleFullPageCardCollapse}
-            />
+          <Col className={"px-0 m-0 col-2"}>
+            <ListGroup>
+              <ListGroupItem className={"shadow-none rounded-0 border-0"}>网页区域</ListGroupItem>
+              {tables.map((table, tableIndex) => (
+                <ListGroupItem key={tableIndex} onClick={() => this.onChooseTable(tableIndex)} active={this.state.tableIndex === tableIndex}>
+                  {table.tableData.name}
+                </ListGroupItem>))}
+            </ListGroup>
           </Col>
-          <Col className={rightColClasses}>
-            {this.props.tables.map((table, tableIndex) => (
-              <Row key={tableIndex}>
-                <PageTableCard table={table} tableIndex={tableIndex}/>
-                <SnapshotCard table={table} tableIndex={tableIndex} />
-                <XSQLCard table={table} tableIndex={tableIndex} />
-                <CSSCard table={table} tableIndex={tableIndex} />
-              </Row>))}
+          <Col className={"px-0 m-0 col-10 vh-100 w-100"}>
+            <PageTableCard className={"h-50"} table={table} tableIndex={tableIndex}/>
+            <Row className={"h-50 my-3 bg-white"}>
+              <XSQLCard table={table} tableIndex={tableIndex} />
+              <CSSCard table={table} tableIndex={tableIndex} />
+              <FragmentCard targetUrl={portalUrl} table={table} tableIndex={tableIndex} />
+              <BrowserCard url={portalUrl} captionPosition={"top"}
+                collapse={this.state.fullPageCardCollapse}
+                toggleCollapse={this.toggleFullPageCardCollapse}
+              />
+            </Row>
           </Col>
         </Row>
       </Container>
@@ -70,7 +75,7 @@ class HarvestDevtools extends React.Component {
 
 HarvestDevtools.propTypes = {
   /**
-   * The portalUrl .
+   * The portalUrl.
    */
   portalUrl: PropTypes.string,
   /**
@@ -84,19 +89,10 @@ HarvestDevtools.propTypes = {
 };
 
 HarvestDevtools.defaultProps = {
-  "portalUrl": "https://www.amazon.com/Best-Sellers-Automotive/zgbs/automotive/ref=zg_bs_nav_0",
-  "args": "-cellType PLAIN_TEXT -verboseJson -diagnose -expires PT8760H -outlinkSelector a[href~=/dp/] -itemExpires PT8760H",
-  "numTables": 9,
-  tables: [
-    {
-      "numColumns": 98,
-      "numRows": 20,
-      "hyperPath": "",
-      rows: [],
-      "tableData": {},
-      "columnsData": []
-    }
-  ]
+  "portalUrl": "",
+  "args": "",
+  "numTables": 0,
+  tables: []
 };
 
 export default HarvestDevtools;

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Col, Container, Row} from "shards-react";
 
-import FullPageCard from "./cards/FullPageCard";
+import BrowserCard from "./cards/BrowserCard";
 import PageTableCard from "./cards/PageTableCard";
 import classNames from "classnames";
 
@@ -22,11 +22,11 @@ class HarvestResult extends React.Component {
 
   render() {
     const leftColClasses = classNames(
-      "py-1 px-0 m-0",
+      "px-0 m-0",
       this.state.fullPageCardCollapse ? "col-10" : "col-6"
     );
     const rightColClasses = classNames(
-      "py-1 px-0 m-0",
+      "px-0 m-0 bg-white",
       this.state.fullPageCardCollapse ? "col-2" : "col-6"
     );
 
@@ -34,13 +34,14 @@ class HarvestResult extends React.Component {
     return (<Container className={"tables"} fluid>
         <Row>
           <Col className={leftColClasses}>
-            {tables.filter((table) => !table.tableData.isCombined).map((table, tableIndex) => (
+            {tables.map((table, tableIndex) => (
               <PageTableCard key={tableIndex} table={table} tableIndex={tableIndex}/>
             ))}
           </Col>
           <Col className={rightColClasses}>
-            <FullPageCard
+            <BrowserCard
               url={portalUrl}
+              captionPosition={"bottom"}
               collapse={this.state.fullPageCardCollapse}
               toggleCollapse={this.toggleFullPageCardCollapse}
             />

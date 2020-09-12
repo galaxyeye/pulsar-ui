@@ -2,18 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Card, CardBody} from "shards-react";
 import FlatTable from "../../../lib/components/FlatTable";
-import classNames from "classnames";
+import classnames from "classnames";
 
 class PageTableCard extends React.Component {
   render() {
-    let { table, tableIndex } = this.props
-    let cardClass = classNames(
-      "w-100 shadow-none rounded-0",
-      tableIndex > 0 ? "my-1" : ""
+    let { table, tableIndex, className } = this.props
+    let cardClass = classnames(
+      "w-100 shadow-none rounded-0"
     )
     return (
-      <Card key={tableIndex} className={cardClass}>
-        <CardBody className={"message"}>
+      <Card key={tableIndex} className={classnames(className, cardClass)}>
+        <CardBody className={"p-3"}>
           <div>
             <i className="no">{tableIndex + 1}.</i>发现 <em>{table.numColumns}</em> 个字段，区域
             <b> {table.tableData.name}</b>

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Card, CardBody, CardHeader, Collapse} from "shards-react";
+import {defaultCardBodyClassName, defaultCardClassName} from "./common";
 
 class CSSCard extends React.Component {
 
@@ -19,10 +20,10 @@ class CSSCard extends React.Component {
   render() {
     let {table, tableIndex} = this.props
     return (
-      <Card className={"my-1 shadow-none rounded-0 collapse show"}>
+      <Card className={defaultCardClassName()}>
         <CardHeader onClick={this.toggleCollapse}>AI 生成的 CSS 路径</CardHeader>
         <Collapse open={!this.state.collapse}>
-          <CardBody>
+          <CardBody className={defaultCardBodyClassName()}>
             <div className="harvest-status__x-sql">
               <table className="table table-light table-sm">
                 <thead>
@@ -33,7 +34,7 @@ class CSSCard extends React.Component {
                 </tr>
                 </thead>
                 <tbody>
-                {table.map((column, columnIndex) => (
+                {table.columnsData.filter(column => column.cname.length > 0).map((column, columnIndex) => (
                   <tr key={columnIndex}>
                     {[columnIndex + 1, createColumnName(tableIndex, columnIndex),
                       column.hyperPath, column.path1, column.path2, table.rows[0][columnIndex]].map((td, i) => (

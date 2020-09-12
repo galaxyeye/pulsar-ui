@@ -6,7 +6,7 @@ const FlatTable = ({ table, tableIndex }) => (
     <thead className="bg-light">
     <tr>
       <th key="C0">&nbsp;</th>
-      {table.columnsData.map((column, columnIndex) => (
+      {table.columnsData.filter(column => column.cname.length > 0).map((column, columnIndex) => (
         <th key={columnIndex}>
           {"T" + (tableIndex + 1) + "C" + (columnIndex + 1)}
         </th>))}
