@@ -611,6 +611,22 @@ section {
   text-decoration: none;
 }
 
+
+/*--------------------------------------------------------------
+# Technology
+--------------------------------------------------------------*/
+.technology .quote-icon-left, .technology .quote-icon-right {
+  color: #e1f0fa;
+  font-size: 26px;
+}
+
+.technology .quote-icon-left {
+  display: inline-block;
+  left: -5px;
+  position: relative;
+}
+
+
 /*--------------------------------------------------------------
 # Counts
 --------------------------------------------------------------*/
@@ -691,9 +707,9 @@ section {
 }
 
 /*--------------------------------------------------------------
-# Services
+# solutions
 --------------------------------------------------------------*/
-.services .icon-box {
+.solutions .icon-box {
   padding: 30px;
   position: relative;
   overflow: hidden;
@@ -704,7 +720,7 @@ section {
   z-index: 1;
 }
 
-.services .icon-box::before {
+.solutions .icon-box::before {
   content: '';
   position: absolute;
   background: #e1f0fa;
@@ -717,7 +733,7 @@ section {
   z-index: -1;
 }
 
-.services .icon-box:hover::before {
+.solutions .icon-box:hover::before {
   background: #3498db;
   right: 0;
   top: 0;
@@ -726,7 +742,7 @@ section {
   border-radius: 0px;
 }
 
-.services .icon {
+.solutions .icon {
   margin: 0 auto 20px auto;
   padding-top: 10px;
   display: inline-block;
@@ -738,42 +754,42 @@ section {
   transition: all 0.3s ease-in-out;
 }
 
-.services .icon i {
+.solutions .icon i {
   font-size: 36px;
   line-height: 1;
   color: #fff;
 }
 
-.services .title {
+.solutions .title {
   font-weight: 700;
   margin-bottom: 15px;
   font-size: 18px;
 }
 
-.services .title a {
+.solutions .title a {
   color: #111;
 }
 
-.services .description {
+.solutions .description {
   font-size: 15px;
   line-height: 28px;
   margin-bottom: 0;
 }
 
-.services .icon-box:hover .title a, .services .icon-box:hover .description {
+.solutions .icon-box:hover .title a, .solutions .icon-box:hover .description {
   color: #fff;
 }
 
-.services .icon-box:hover .icon {
+.solutions .icon-box:hover .icon {
   background: #fff;
 }
 
-.services .icon-box:hover .icon i {
+.solutions .icon-box:hover .icon i {
   color: #3498db;
 }
 
 /*--------------------------------------------------------------
-# More Services
+# More solutions
 --------------------------------------------------------------*/
 .more-services {
   padding-top: 20px;
@@ -1575,4 +1591,53 @@ section {
 
 #footer .footer-links a:hover {
   color: #3498db;
+}
+
+
+
+
+<!-- pulsar-ui -->
+
+/* table's style */
+#tables table {
+  border-right: 0;
+  min-width: 30%
+}
+
+#tables th {
+  border: 0;
+  padding: 1px;
+}
+
+#tables th a {
+  display: block;
+  padding: 2px 4px;
+  text-decoration: none;
+}
+
+#tables tr td {
+  padding: 2px;
+  vertical-align: top; /*border-bottom:1px solid #E5F0FF;*/
+}
+
+#tables table.table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  empty-cells: show;
+}
+
+div.table {
+  margin-right: 10px;
+  overflow-x: auto;
+  table-layout: fixed;
+  white-space: nowrap;
+}
+
+div.table td {
+  max-width: 300px;
+  white-space: nowrap;
+  padding: 2px;
+  font-size: smaller;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
