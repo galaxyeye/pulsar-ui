@@ -180,7 +180,7 @@ from load_out_pages('https://www.amazon.com/b?node=3117954011', 'a[href~=/dp/]',
               <b>零干预将网站还原为数据</b>
             </p>
             <p>
-              给定入口链接，柏拉图 AI 识别、浏览并解读最重要的链出页，输出所有字段：
+              给定入口链接，柏拉图 AI 识别、浏览并解读最重要的链出页，输出>全部</b>字段：
             </p>
 
             <pre><code class="language-sql">select * from harvest('https://www.amazon.com/b?node=3117954011');</code></pre>
@@ -846,6 +846,85 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
       </div>
     </section><!-- End Portfolio Section -->
 
+    <!-- ======= Pricing Section ======= -->
+    <section id="pricing" class="pricing">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>价格方案</h2>
+          <p>选择最适合您的方案</p>
+        </div>
+
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="box" data-aos="zoom-in-right" data-aos-delay="200">
+              <h3>免费版</h3>
+              <h4><sup>¥</sup>0<span></span></h4>
+              <ul>
+                <li>本地 API</li>
+                <li>X-SQL</li>
+                <li>Web BI</li>
+                <li>浏览器支持</li>
+                <li class="na">智能挖掘</li>
+                <li class="na">SaaS 服务</li>
+                <li class="na">分布式支持</li>
+                <li class="na">可选存储方案</li>
+                <li class="na">本地部署</li>
+              </ul>
+              <div class="btn-wrap">
+                <a href="#" class="btn-buy">立即购买</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mt-4 mt-md-0">
+            <div class="box recommended" data-aos="zoom-in" data-aos-delay="100">
+              <h3>API 调用</h3>
+              <h4><sup>¥</sup>4000<span> / 百万网页</span></h4>
+              <ul>
+                <li>本地 API</li>
+                <li>X-SQL</li>
+                <li>Web BI</li>
+                <li>浏览器支持</li>
+                <li>智能挖掘</li>
+                <li>SaaS 服务</li>
+                <li>分布式支持</li>
+                <li class="na">可选存储方案</li>
+                <li class="na">本地部署</li>
+              </ul>
+              <div class="btn-wrap">
+                <a href="#" class="btn-buy">立即购买</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
+            <div class="box" data-aos="zoom-in-left" data-aos-delay="200">
+              <h3>企业私有云</h3>
+              <h4><sup>¥</sup>10 ~ <sup>¥</sup>100 <span>万 / 年</span></h4>
+              <ul>
+                <li>本地 API</li>
+                <li>X-SQL</li>
+                <li>Web BI</li>
+                <li>浏览器支持</li>
+                <li>智能挖掘</li>
+                <li>SaaS 服务</li>
+                <li>分布式支持</li>
+                <li>可选存储方案</li>
+                <li>本地部署</li>
+              </ul>
+              <div class="btn-wrap">
+                <a href="#" class="btn-buy">立即购买</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Pricing Section -->
+
     <!-- ======= Team Section ======= -->
     <section id="team" class="team section-bg hide">
       <div class="container">
@@ -933,85 +1012,6 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
 
       </div>
     </section><!-- End Team Section -->
-
-    <!-- ======= Pricing Section ======= -->
-    <section id="pricing" class="pricing">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>价格方案</h2>
-          <p>选择最适合您的方案</p>
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-4 col-md-6">
-            <div class="box" data-aos="zoom-in-right" data-aos-delay="200">
-              <h3>免费版</h3>
-              <h4><sup>¥</sup>0<span></span></h4>
-              <ul>
-                <li>本地 API</li>
-                <li>X-SQL</li>
-                <li>Web BI</li>
-                <li>浏览器支持</li>
-                <li class="na">智能挖掘</li>
-                <li class="na">SaaS 服务</li>
-                <li class="na">分布式支持</li>
-                <li class="na">可选存储方案</li>
-                <li class="na">本地部署</li>
-              </ul>
-              <div class="btn-wrap">
-                <a href="#" class="btn-buy">立即购买</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mt-4 mt-md-0">
-            <div class="box recommended" data-aos="zoom-in" data-aos-delay="100">
-              <h3>API 调用</h3>
-              <h4><sup>¥</sup>4000<span> / 百万网页</span></h4>
-              <ul>
-                <li>本地 API</li>
-                <li>X-SQL</li>
-                <li>Web BI</li>
-                <li>浏览器支持</li>
-                <li>智能挖掘</li>
-                <li>SaaS 服务</li>
-                <li>分布式支持</li>
-                <li class="na">可选存储方案</li>
-                <li class="na">本地部署</li>
-              </ul>
-              <div class="btn-wrap">
-                <a href="#" class="btn-buy">立即购买</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
-            <div class="box" data-aos="zoom-in-left" data-aos-delay="200">
-              <h3>企业私有云</h3>
-              <h4><sup>¥</sup>10 ~ <sup>¥</sup>100 <span>万 / 年</span></h4>
-              <ul>
-                <li>本地 API</li>
-                <li>X-SQL</li>
-                <li>Web BI</li>
-                <li>浏览器支持</li>
-                <li>智能挖掘</li>
-                <li>SaaS 服务</li>
-                <li>分布式支持</li>
-                <li>可选存储方案</li>
-                <li>本地部署</li>
-              </ul>
-              <div class="btn-wrap">
-                <a href="#" class="btn-buy">立即购买</a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Pricing Section -->
 
     <!-- ======= F.A.Q Section ======= -->
     <section id="faq" class="faq">
