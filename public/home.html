@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>柏拉图智能 - Web 数据管理革命</title>
+  <title>柏拉图智能 - Web 数据革命</title>
   <meta content="" name="descriptison">
-  <meta content="" name="keywords">
+  <meta content="数据采集，Web scraping，网络爬虫，电商大数据，数据资产管理" name="keywords">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -25,9 +25,7 @@
   <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
-  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/highlight.min.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
+  <link rel="stylesheet" href="assets/vendor/highlightjs/styles/default.css">
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
@@ -60,7 +58,7 @@
           <li><a href="#more-services">案例演示</a></li>
           <li><a href="#pricing">价格方案</a></li>
           <li><a href="#team">团队</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">联系我们</a></li>
 
           <li class="get-started"><a href="#about">开始</a></li>
         </ul>
@@ -143,7 +141,7 @@
               <li><i class="ri-check-double-line"></i> <b>X-SQL</b> - 架构在 Web 上的 SQL 引擎，Web 和本地数据库同等对待</li>
               <li><i class="ri-check-double-line"></i> <b>人工智能</b> - 人工智能驱动的自动网页挖掘技术，零干预或极少干预，超大规模网页<b>完整精确</b>还原为数据</li>
               <li><i class="ri-check-double-line"></i> <b>弹性计算</b> - 分布式网页渲染引擎满足任意规模的数据采集需求</li>
-              <li><i class="ri-check-double-line"></i> <b>商业智能</b> - 在 Web 上应用商业智能，捕捉成千上万关键事件，回答利益攸关的业务问题</li>
+              <li><i class="ri-check-double-line"></i> <b>商业智能</b> - 在 Web 上应用商业智能，捕捉成千上万高价值事件，回答利益攸关的业务问题</li>
             </ul>
           </div>
           <div class="col-lg-7 pt-4 pt-lg-0" data-aos="fade-up" data-aos-delay="300">
@@ -160,9 +158,10 @@ select
     str_first_float(dom_first_text(dom, '#reviewsMedley .AverageCustomerReviews span:contains(out of)'), 0.0) as `score`,
 from load_out_pages('https://www.amazon.com/b?node=3117954011', 'a[href~=/dp/]', 1, 10);
               </code></pre>
-            <a href="http://bi.platonic.fun" class="btn-learn-more" target="_blank">执行</a>
+            <a href="http://bi.platonic.fun/question/41" class="btn-learn-more" target="_blank">执行</a>
           </div>
         </div>
+
       </div>
     </section><!-- End About Us Section -->
 
@@ -181,7 +180,7 @@ from load_out_pages('https://www.amazon.com/b?node=3117954011', 'a[href~=/dp/]',
               <b>零干预将网站还原为数据</b>
             </p>
             <p>
-              给定入口链接，柏拉图 AI 识别、浏览并解读最重要的链出页，输出<b>全部</b>字段：
+              给定入口链接，柏拉图 AI 识别、浏览并解读最重要的链出页，输出>全部</b>字段：
             </p>
 
             <pre><code class="language-sql">select * from harvest('https://www.amazon.com/b?node=3117954011');</code></pre>
@@ -191,7 +190,7 @@ from load_out_pages('https://www.amazon.com/b?node=3117954011', 'a[href~=/dp/]',
             <div id="tables">
               <p class="text-secondary">
                 <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                AI 已浏览<i class="px-2">20</i>个网页，已理解<i class="px-2">8</i>组数据共<i class="px-2">87</i>个字段。
+                AI 已浏览<i class="px-2">120</i>个网页，已理解<i class="px-2">8</i>组数据共<i class="px-2">87</i>个字段。
                 以下显示第<i class="px-2">2</i>组数据，该组数据共包含<i class="px-2">10</i>个字段，对应网页区域 <i>#centerCol</i>
                 <i class="bx bxs-quote-alt-right quote-icon-right"></i>
               </p>
@@ -229,7 +228,7 @@ from load_out_pages('https://www.amazon.com/b?node=3117954011', 'a[href~=/dp/]',
                   </tbody>
                 </table>
               </div>
-              <a href="http://bi.platonic.fun" class="btn-learn-more" target="_blank">执行</a>
+              <a href="http://bi.platonic.fun/" class="btn-learn-more" target="_blank">执行</a>
             </div>
           </div>
         </div>
@@ -265,7 +264,7 @@ Content-Type: application/json
 from load_out_pages('https://www.amazon.com/b?node=3117954011', 'a[href~=/dp/]', 1, 10);
 ",
   "callbackUrl": "http://{{host-of-your-callback-api}}/{{path-of-your-callback-api}}",
-  "authToken": "gJn6fUBh-1-af1639a924d7232099a037e9544cf43f"
+  "authToken": "fake-auth-gJn6fUBh-1-af1639a924d7232099a037e9544cf43f"
 }
               </code></pre>
           </div>
@@ -282,6 +281,7 @@ from load_out_pages('https://www.amazon.com/b?node=3117954011', 'a[href~=/dp/]',
             <a href="http://bi.platonic.fun" class="btn-learn-more" target="_blank">了解更多</a>
           </div>
         </div>
+
       </div>
     </section><!-- End Data API -->
 
@@ -485,11 +485,6 @@ from load_out_pages('https://www.amazon.com/b?node=3117954011', 'a[href~=/dp/]',
     <section id="more-services" class="more-services">
       <div class="container">
 
-<!--        <div class="section-title" data-aos="fade-up">-->
-<!--          <h2>解决方案</h2>-->
-<!--          <p>告诉我们您在进行何种类型的项目</p>-->
-<!--        </div>-->
-
         <div class="row">
 
           <div class="col-md-6 d-flex align-items-stretch">
@@ -562,7 +557,7 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
 
         <div class="section-title" data-aos="fade-up">
           <h2>产品特性</h2>
-          <p>柏拉图提供了一系列高级特性来解决客户面临的关键问题</p>
+          <p>柏拉图提供了一系列高级能力来解决客户面临的关键问题</p>
         </div>
 
         <div class="row" data-aos="fade-up" data-aos-delay="300">
@@ -876,7 +871,6 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
                 <li class="na">分布式支持</li>
                 <li class="na">可选存储方案</li>
                 <li class="na">本地部署</li>
-                <li class="na">定制的采集调度</li>
               </ul>
               <div class="btn-wrap">
                 <a href="#" class="btn-buy">立即购买</a>
@@ -898,7 +892,6 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
                 <li>分布式支持</li>
                 <li class="na">可选存储方案</li>
                 <li class="na">本地部署</li>
-                <li class="na">定制的采集调度</li>
               </ul>
               <div class="btn-wrap">
                 <a href="#" class="btn-buy">立即购买</a>
@@ -920,7 +913,6 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
                 <li>分布式支持</li>
                 <li>可选存储方案</li>
                 <li>本地部署</li>
-                <li>定制的采集调度</li>
               </ul>
               <div class="btn-wrap">
                 <a href="#" class="btn-buy">立即购买</a>
@@ -1069,7 +1061,7 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
         <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
           <div class="col-lg-5">
             <i class="ri-question-line"></i>
-            <h4>可以使用哪些编程语言来使用柏拉图？</h4>
+            <h4>可以使用哪些编程语言来获得柏拉图 SaaS 服务？</h4>
           </div>
           <div class="col-lg-7">
             <p>
@@ -1085,7 +1077,7 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
           </div>
           <div class="col-lg-7">
             <p>
-              我们多年思考网络数据处理问题，希望以一种最优的方式去治理外部数据。将互联网同本地数据库同等对待是最佳方式。在后续版本里，柏拉图会支持流式 SQL，以完整符合网络数据的流式特征。
+              我们多年研究网络数据处理问题，希望以一种最优的方式去治理外部数据。将互联网同本地数据库同等对待是最佳方式。在后续版本里，柏拉图会支持流式 SQL，以完整符合网络数据的流式特征。
             </p>
           </div>
         </div><!-- End F.A.Q Item-->
@@ -1207,6 +1199,9 @@ from load_and_select('https://www.amazon.com/gp/new-releases/home-garden/ref=zg_
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/venobox/venobox.min.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
+
+  <script src="assets/vendor/highlightjs/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
