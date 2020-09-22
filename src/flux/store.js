@@ -9,6 +9,7 @@ import getAuth from "../data/userAuth";
 let _store = {
   menuVisible: false,
   apiHost: "http://localhost:8182",
+  portalUrl: "",
   auth: getAuth(),
   navItems: getSidebarNavItems(),
   harvestStatus: getHarvestStatus(),
@@ -22,6 +23,7 @@ class Store extends EventEmitter {
     this.registerToActions = this.registerToActions.bind(this);
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.toggleDevtools = this.toggleDevtools.bind(this);
+    this.changePortalUrl = this.changePortalUrl.bind(this);
 
     Dispatcher.register(this.registerToActions.bind(this));
   }
@@ -33,6 +35,9 @@ class Store extends EventEmitter {
         break;
       case Constants.TOGGLE_DEVTOOLS:
         this.toggleDevtools();
+        break;
+      case Constants.CHANGE_PORTAL_URL:
+        this.changePortalUrl(payload);
         break;
       default:
     }
@@ -49,6 +54,12 @@ class Store extends EventEmitter {
     this.emit(Constants.CHANGE);
   }
 
+  changePortalUrl(portalUrl) {
+    _store.portalUrl = portalUrl
+    console.log("changePortalUrl " + _store.portalUrl)
+    this.emit(Constants.CHANGE);
+  }
+
   getMenuState() {
     return _store.menuVisible;
   }
@@ -59,6 +70,10 @@ class Store extends EventEmitter {
 
   getAuth() {
     return _store.auth;
+  }
+
+  getPortalUrl() {
+    return _store.portalUrl;
   }
 
   getHarvestStatus() {
@@ -82,11 +97,18 @@ class Store extends EventEmitter {
   }
 
   addDevtoolsToggleListener(callback) {
-    console.log("received")
     this.on(Constants.CHANGE, callback);
   }
 
   removeDevtoolsToggleListener(callback) {
+    this.removeListener(Constants.CHANGE, callback);
+  }
+
+  addPortalUrlChangeListener(callback) {
+    this.on(Constants.CHANGE, callback);
+  }
+
+  removePortalUrlChangeListener(callback) {
     this.removeListener(Constants.CHANGE, callback);
   }
 }

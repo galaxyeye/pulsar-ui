@@ -10,10 +10,9 @@ import type {HarvestTaskStatusType} from "../lib/HarvestTaskStatusType";
 import {RingLoader} from "react-spinners";
 
 let auth = Store.getAuth()
-let harvestTaskRequest = {
+const clientTemplate = {
   username: auth.username,
   authToken: auth.authToken,
-  portalUrl: "https://www.amazon.com/Best-Sellers-Automotive/zgbs/automotive/ref=zg_bs_nav_0",
   args: "-i 1d -ii 365d -ol a[href~=/dp/] -diagnose -vj",
   apiEntry: Store.getApiHost() + "/api",
   proxyLinks: true
@@ -28,7 +27,7 @@ let defaultHarvestStatus: HarvestTaskStatusType = {
 }
 
 function getTaskStatusRequest(id) {
-  return {"username": harvestTaskRequest.username, "authToken": harvestTaskRequest.authToken, "id": id}
+  return {"username": clientTemplate.username, "authToken": clientTemplate.authToken, "id": id}
 }
 
 class HarvestPage extends React.Component {
@@ -37,23 +36,69 @@ class HarvestPage extends React.Component {
 
     // Set some state
     this.state = {
+      portalUrl: Store.getPortalUrl(),
       message: "加载中 ...",
       devMode: Store.getDevMode(),
-      harvestTaskRequest: harvestTaskRequest,
+      clientTemplate: clientTemplate,
       harvestTaskStatus: defaultHarvestStatus
     };
 
     this.timer = null;
     this.tick = 0;
 
-    this.onChange = this.onChange.bind(this);
+    this.onDevModeChange = this.onDevModeChange.bind(this);
+    this.onPortalUrlChange = this.onPortalUrlChange.bind(this);
+    this.submitTask = this.submitTask.bind(this);
     this.getHarvestTaskStatus = this.getHarvestTaskStatus.bind(this);
     this.getTables = this.getTables.bind(this);
   }
 
-  componentWillMount() {
-    let request = this.state.harvestTaskRequest
+  componentDidMount() {
+    this.submitTask(this.state.portalUrl)
 
+    Store.addDevtoolsToggleListener(this.onDevModeChange);
+    Store.addPortalUrlChangeListener(this.onPortalUrlChange);
+  }
+
+  componentWillUnmount() {
+    Store.removeDevtoolsToggleListener(this.onDevModeChange);
+    Store.removePortalUrlChangeListener(this.onPortalUrlChange);
+    clearInterval(this.timer)
+  }
+
+  onDevModeChange() {
+    this.setState({
+      ...this.state,
+      devMode: Store.getDevMode()
+    });
+  }
+
+  onPortalUrlChange() {
+    let portalUrl = Store.getPortalUrl()
+
+    console.log("changed to 1: " + Store.getPortalUrl())
+    if (portalUrl === this.state.portalUrl) {
+      return
+    }
+
+    this.setState({
+      ...this.state,
+      portalUrl: portalUrl,
+      harvestTaskStatus: defaultHarvestStatus
+    });
+
+    this.submitTask(portalUrl)
+
+    console.log("changed to: " + Store.getPortalUrl())
+  }
+
+  submitTask(portalUrl) {
+    let request = this.state.clientTemplate
+    if (!portalUrl.startsWith("http")) {
+      return
+    }
+
+    request.portalUrl = portalUrl
     HarvestApi.query(request).then((taskId) => {
       console.log("Task id: " + taskId)
 
@@ -61,20 +106,6 @@ class HarvestPage extends React.Component {
       this.getHarvestTaskStatus(taskId)
     }).catch(function (ex) {
       console.log('Response parsing failed. Error: ', ex);
-    });
-
-    Store.addDevtoolsToggleListener(this.onChange);
-  }
-
-  componentWillUnmount() {
-    Store.removeDevtoolsToggleListener(this.onChange);
-    clearInterval(this.timer)
-  }
-
-  onChange() {
-    this.setState({
-      ...this.state,
-      devMode: Store.getDevMode()
     });
   }
 
@@ -133,7 +164,7 @@ class HarvestPage extends React.Component {
     return (
       <Row>
         <Col className="p-0">
-          <MainNavbar defaultUrl={this.state.harvestTaskRequest.portalUrl} stickyTop={true} devtoolsSwitch={true} />
+          <MainNavbar defaultUrl={this.state.portalUrl} stickyTop={true} devtoolsSwitch={true} />
           {
             (statusCode !== 200) ? this.renderLoading(taskStatus) : this.renderHarvestResult()
           }
@@ -146,13 +177,13 @@ class HarvestPage extends React.Component {
     return (
       !this.state.devMode ?
       <HarvestResult
-        portalUrl={this.state.harvestTaskRequest.portalUrl}
-        args={this.state.harvestTaskRequest.args}
+        portalUrl={this.state.portalUrl}
+        args={this.state.clientTemplate.args}
         tables={this.getTables()}
       /> :
         <HarvestDevtools
-          portalUrl={this.state.harvestTaskRequest.portalUrl}
-          args={this.state.harvestTaskRequest.args}
+          portalUrl={this.state.portalUrl}
+          args={this.state.clientTemplate.args}
           tables={this.getTables()}
         />
       )
