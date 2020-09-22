@@ -1,63 +1,55 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Card, CardBody, CardHeader, Collapse} from "shards-react";
 import HtmlContent from "../../analyse-page/HtmlContent";
 import {Store} from "../../../flux";
-import {Buffer} from "buffer";
 import {W3DocApi} from "../../../services";
-import {findSampleUrlFromTable} from "../../../lib/HarvestTaskStatus";
-import {defaultCardBodyClassName, defaultCardClassName} from "./common";
+import {findSampleUrlFromTable} from "../../../lib/harvest";
+
 const base64url = require('base64-url')
 
 class FragmentCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.toggleCollapse = this.toggleCollapse.bind(this);
+    this.fetchDocument = this.fetchDocument.bind(this);
     this.state = {
-      collapse: true,
       sampleUrl: null,
+      cssPath: null,
       w3doc: null
     };
   }
 
-  toggleCollapse() {
-    if (!this.state.collapse) {
-      this.editor = null
-    } else {
-      let sampleUrl = findSampleUrlFromTable(this.props.table)
-      if (this.state.sampleUrl !== sampleUrl) {
-        W3DocApi.get({
-          url: base64url.encode(sampleUrl),
-          noStyle: true,
-          noImg: true,
-          noMedia: true,
-          noCustomAttributes: true,
-          fragmentCss: this.props.table.tableData.hyperPath,
-          authToken: Store.getAuth().userToken
-        }).then((w3doc) => {
-          this.setState({...this.state, sampleUrl: sampleUrl, w3doc: w3doc})
-        }).catch(function (ex) {
-          console.log('Response parsing failed. Error: ', ex);
-        });
-      }
-    }
+  componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+    let sampleUrl = findSampleUrlFromTable(this.props.table, this.props.activeRowIndex)
+    let cssPath = this.props.table.tableData.hyperPath
 
-    this.setState({...this.state, collapse: !this.state.collapse});
+    if (this.state.sampleUrl !== sampleUrl || this.state.cssPath !== cssPath) {
+      this.fetchDocument()
+    }
+  }
+
+  fetchDocument() {
+    let sampleUrl = findSampleUrlFromTable(this.props.table, this.props.rowIndex)
+    let cssPath = this.props.table.tableData.hyperPath
+
+    W3DocApi.get({
+      url: base64url.encode(sampleUrl),
+      noStyle: true,
+      noImg: true,
+      noMedia: true,
+      noCustomAttributes: true,
+      fragmentCss: cssPath,
+      authToken: Store.getAuth().userToken
+    }).then((w3doc) => {
+      this.setState({...this.state, sampleUrl: sampleUrl, cssPath: cssPath, w3doc: w3doc})
+    }).catch(function (ex) {
+      console.log('Response parsing failed. Error: ', ex);
+    });
   }
 
   render() {
     return (
-      <Card className={defaultCardClassName()}>
-        <CardHeader onClick={this.toggleCollapse}>
-          页面局部
-        </CardHeader>
-        <Collapse open={!this.state.collapse}>
-          <CardBody className={defaultCardBodyClassName()}>
-            <HtmlContent html={this.state.w3doc} />
-          </CardBody>
-        </Collapse>
-      </Card>
+      <HtmlContent rowIndex={this.props.rowIndex} html={this.state.w3doc} />
     )
   }
 }
@@ -66,11 +58,13 @@ FragmentCard.propTypes = {
   /**
    * The url of the sample page.
    */
-  table: PropTypes.object
+  table: PropTypes.object,
+  rowIndex: PropTypes.number
 };
 
 FragmentCard.defaultProps = {
-  url: ""
+  url: "",
+  rowIndex: 0
 };
 
 export default FragmentCard;

@@ -10,7 +10,6 @@ import {
   Row
 } from "shards-react";
 import HtmlContent from "./HtmlContent";
-import "../../assets/js/sketch"
 
 const PageView = ({ title, pageView }) => (
   <Card small className="blog-comments">

@@ -18,10 +18,10 @@
 .style-reset time, .style-reset mark, .style-reset audio, .style-reset video {
   margin: 0 !important;
   padding: 0 !important;
-  border: 0 !important;
   font-size: 100% !important;
   font: inherit !important;
   vertical-align: baseline !important;
+  line-height: 2rem !important;
 }
 /* HTML5 display-role reset for older browsers */
 .style-reset article, .style-reset aside, .style-reset details, .style-reset figcaption, .style-reset figure,
@@ -45,4 +45,15 @@
 .style-reset table {
   border-collapse: collapse !important;
   border-spacing: 0 !important;
+}
+
+.page-view__html-content .style-reset span,
+.page-view__html-content .style-reset a,
+.page-view__html-content .style-reset b,
+.page-view__html-content .style-reset em,
+.page-view__html-content .style-reset p,
+.page-view__html-content .style-reset th,
+.page-view__html-content .style-reset td {
+  display: inline-block !important;
+  border: 1px dotted lightgrey !important;
 }

@@ -6,7 +6,7 @@ import HarvestResult from "../components/harvest/HarvestResult";
 import HarvestDevtools from "../components/harvest/HarvestDevtools";
 import {HarvestApi} from "../services";
 import PageTitle from "../components/common/PageTitle";
-import type {HarvestTaskStatus} from "../lib/HarvestTaskStatus";
+import type {HarvestTaskStatusType} from "../lib/HarvestTaskStatusType";
 import {RingLoader} from "react-spinners";
 
 let auth = Store.getAuth()
@@ -19,7 +19,7 @@ let harvestTaskRequest = {
   proxyLinks: true
 }
 
-let defaultHarvestStatus: HarvestTaskStatus = {
+let defaultHarvestStatus: HarvestTaskStatusType = {
   statusCode: 201,
   status: "CREATED",
   result: {
@@ -134,10 +134,6 @@ class HarvestPage extends React.Component {
       <Row>
         <Col className="p-0">
           <MainNavbar defaultUrl={this.state.harvestTaskRequest.portalUrl} stickyTop={true} devtoolsSwitch={true} />
-          <Row noGutters className="page-header py-4">
-            <PageTitle title="柏拉图浏览器" subtitle={this.state.message} className="text-sm-left mb-3" />
-          </Row>
-
           {
             (statusCode !== 200) ? this.renderLoading(taskStatus) : this.renderHarvestResult()
           }
@@ -165,6 +161,10 @@ class HarvestPage extends React.Component {
   renderLoading(taskStatus) {
     return (
       <Container fluid>
+        <Row noGutters className="page-header py-4">
+          <PageTitle title="柏拉图 AI 浏览器" subtitle={this.state.message} className="text-sm-left mb-3" />
+        </Row>
+
         <Row className="page-loading align-items-center h-100">
           <div className="mx-auto">
             <div className="jumbotron text-center">

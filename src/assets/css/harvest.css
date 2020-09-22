@@ -30,3 +30,9 @@ table.table-flat td, table.table-flat th {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+div.css-path code {
+  line-height: 95%;
+  font-size: large;
+  padding: 0;
+}

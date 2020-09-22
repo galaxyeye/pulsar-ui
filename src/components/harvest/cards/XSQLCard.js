@@ -1,6 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Card, CardBody, CardHeader, Collapse, FormGroup} from "shards-react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Collapse, Container,
+  FormGroup
+} from "shards-react";
 import {UnControlled as CodeMirror} from "react-codemirror2";
 import {defaultCardBodyClassName, defaultCardClassName} from "./common";
 
@@ -8,28 +15,23 @@ class XSQLCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.toggleCollapse = this.toggleCollapse.bind(this);
     this.state = {
-      collapse: true
+      active: false
     };
     this.editor = null
     this.timer = null
   }
 
-  toggleCollapse() {
-    if (!this.state.collapse) {
-      this.editor = null
-    } else {
-      let card = this
-      this.timer = setInterval(function() {
-        if (card.editor != null) {
-          card.editor.refresh();
+  componentDidMount() {
+    let card = this
+    this.timer = setInterval(function() {
+      if (card.editor != null) {
+        card.editor.refresh();
+        if (document.querySelector(".harvest-status__x-sql").textContent.indexOf("select") > 0) {
           clearInterval(card.timer)
         }
-      }, 5);
-    }
-
-    this.setState({collapse: !this.state.collapse});
+      }
+    }, 500);
   }
 
   componentWillUnmount() {
@@ -39,12 +41,8 @@ class XSQLCard extends React.Component {
   render() {
     let card = this
     return (
-      <Card className={defaultCardClassName()}>
-        <CardHeader onClick={this.toggleCollapse}>
-          AI 生成 X-SQL
-        </CardHeader>
-
-        <Collapse open={!this.state.collapse}>
+      <Container fluid>
+        <Card className={defaultCardClassName()}>
           <CardBody className={defaultCardBodyClassName()}>
             <FormGroup>
               <CodeMirror
@@ -57,6 +55,7 @@ class XSQLCard extends React.Component {
                   fullScreen: false,
                 }}
                 editorDidMount={(editor) => {
+                  console.log("mount")
                   card.editor = editor
                 }}
                 onBlur={(editor, data, value) => {
@@ -64,18 +63,13 @@ class XSQLCard extends React.Component {
                 onChange={(editor, data, value) => {
                 }}
               />
-              {/*<FormTextarea value={table.tableData.xsql} rows={table.tableData.xsql.split("\n").length} />*/}
             </FormGroup>
-            {/*<FormGroup>*/}
-            {/*  <ButtonGroup>*/}
-            {/*    <Button theme="white" type="submit">*/}
-            {/*      执行*/}
-            {/*    </Button>*/}
-            {/*  </ButtonGroup>*/}
-            {/*</FormGroup>*/}
+            <Button theme="white" type="submit">
+              执行
+            </Button>
           </CardBody>
-        </Collapse>
-      </Card>)
+        </Card>
+      </Container>)
   }
 }
 

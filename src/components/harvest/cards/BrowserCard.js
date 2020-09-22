@@ -1,13 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Collapse,
-  Row
-} from "shards-react";
+import {Card, CardBody, Container} from "shards-react";
 import Iframe from "react-iframe";
 import {Buffer} from "buffer";
 import {Store} from "../../../flux";
@@ -18,39 +11,29 @@ class BrowserCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.toggleCollapse = this.toggleCollapse.bind(this);
     this.state = {
-      collapse: true
+      active: true
     };
   }
 
-  toggleCollapse() {
-    this.setState({collapse: !this.state.collapse});
-  }
-
   render() {
-    let { url, collapse, toggleCollapse, className, captionPosition } = this.props
+    let { url, className } = this.props
 
     return (
-      <Card className={classnames(className, defaultCardClassName())}>
-        { captionPosition === "top" ? <CardHeader onClick={toggleCollapse}>浏览器</CardHeader> : ""}
-        <Collapse open={!collapse}>
-          {
-            collapse ? (<Row/>) :
-              (<CardBody className={"p-2 overflow-auto"}>
-                <Iframe
-                  url={getW3DocApi(url)}
-                  id={"pageViewFrame"}
-                  width={"1920"}
-                  height={window.innerHeight - 200}
-                  loading={"lazy"}
-                  scrolling={"yes"}
-                />
-              </CardBody>)
-          }
-        </Collapse>
-        { captionPosition === "bottom" ? <CardFooter onClick={toggleCollapse}>浏览器</CardFooter> : ""}
-      </Card>)
+      <Container fluid>
+        <Card className={classnames(className, defaultCardClassName())}>
+          <CardBody className={"p-2 overflow-auto"}>
+            <Iframe
+              url={getW3DocApi(url)}
+              id={"pageViewFrame"}
+              width={"1920"}
+              height={window.innerHeight - 200}
+              loading={"lazy"}
+              scrolling={"yes"}
+            />
+          </CardBody>
+        </Card>
+      </Container>)
   }
 }
 
