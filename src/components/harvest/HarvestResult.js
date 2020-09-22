@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Button, ButtonGroup, Col, Collapse, Container, Row} from "shards-react";
+import {Button, ButtonGroup, Col, Container, Row} from "shards-react";
 
 import BrowserCard from "./cards/BrowserCard";
 import PageTableCard from "./cards/PageTableCard";
@@ -11,13 +11,14 @@ class HarvestResult extends React.Component {
   constructor(props) {
     super(props);
     this.toggleBrowser = this.toggleBrowser.bind(this);
+
     this.state = {
       browserActive: false
     };
   }
 
   toggleBrowser() {
-    this.setState({browserActive: !this.state.browserActive});
+    this.setState({...this.state, browserActive: !this.state.browserActive});
   }
 
   render() {
@@ -39,13 +40,15 @@ class HarvestResult extends React.Component {
             ))}
           </Col>
           <Col className={rightColClasses}>
-            <Collapse open={this.state.browserActive}>
-              <BrowserCard url={portalUrl} />
-            </Collapse>
-            <Button outline onClick={this.toggleBrowser}>
-              <i className={"material-icons"}>pageview</i>
-              浏览器
-            </Button>
+            {
+              this.state.browserActive ? <BrowserCard url={portalUrl} /> : <div/>
+            }
+            <ButtonGroup>
+              <Button outline onClick={this.toggleBrowser}>
+                <i className={"material-icons"}>pageview</i>
+                浏览器
+              </Button>
+            </ButtonGroup>
           </Col>
         </Row>
       </Container>

@@ -9,7 +9,7 @@ import getAuth from "../data/userAuth";
 let _store = {
   menuVisible: false,
   apiHost: "http://localhost:8182",
-  portalUrl: "",
+  portalUrl: "https://www.amazon.com/b?node=3117954011",
   auth: getAuth(),
   navItems: getSidebarNavItems(),
   harvestStatus: getHarvestStatus(),
@@ -49,8 +49,8 @@ class Store extends EventEmitter {
   }
 
   toggleDevtools() {
-    console.log("Store.toggleDevtools")
     _store.devMode = !_store.devMode;
+    console.log("Store.toggleDevtools " + _store.devMode)
     this.emit(Constants.CHANGE);
   }
 

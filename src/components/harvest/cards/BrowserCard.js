@@ -18,7 +18,7 @@ class BrowserCard extends React.Component {
 
   render() {
     let { url, className } = this.props
-
+    let iframe = document.querySelector("iframe")
     return (
       <Container fluid>
         <Card className={classnames(className, defaultCardClassName())}>
@@ -41,6 +41,7 @@ function getW3DocApi(targetUrl) {
   let auth = Store.getAuth()
   let api = Store.getApiHost() + "/api/w3doc?"
     + "url=" + Buffer.from(targetUrl).toString('base64')
+    + "&proxyLinks=true"
     + "&authToken=" + auth.userToken
   console.log(api)
   return api
