@@ -21,7 +21,7 @@ let harvestTaskRequest = {
 
 let defaultHarvestStatus: HarvestTaskStatusType = {
   statusCode: 201,
-  status: "CREATED",
+  status: "Created",
   result: {
     tables: []
   }

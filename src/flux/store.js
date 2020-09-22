@@ -12,7 +12,7 @@ let _store = {
   auth: getAuth(),
   navItems: getSidebarNavItems(),
   harvestStatus: getHarvestStatus(),
-  devMode: true
+  devMode: false
 };
 
 class Store extends EventEmitter {

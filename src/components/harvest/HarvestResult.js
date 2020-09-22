@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Col, Container, Row} from "shards-react";
+import {Button, ButtonGroup, Col, Collapse, Container, Row} from "shards-react";
 
 import BrowserCard from "./cards/BrowserCard";
 import PageTableCard from "./cards/PageTableCard";
@@ -10,24 +10,24 @@ class HarvestResult extends React.Component {
 
   constructor(props) {
     super(props);
-    this.toggleFullPageCardCollapse = this.toggleFullPageCardCollapse.bind(this);
+    this.toggleBrowser = this.toggleBrowser.bind(this);
     this.state = {
-      fullPageCardCollapse: true
+      browserActive: false
     };
   }
 
-  toggleFullPageCardCollapse() {
-    this.setState({fullPageCardCollapse: !this.state.fullPageCardCollapse});
+  toggleBrowser() {
+    this.setState({browserActive: !this.state.browserActive});
   }
 
   render() {
     const leftColClasses = classNames(
       "px-0 m-0",
-      this.state.fullPageCardCollapse ? "col-10" : "col-6"
+      this.state.browserActive ? "col-6" : "col-11"
     );
     const rightColClasses = classNames(
       "px-0 m-0 bg-white",
-      this.state.fullPageCardCollapse ? "col-2" : "col-6"
+      this.state.browserActive ? "col-6" : "col"
     );
 
     let {tables, portalUrl} = this.props;
@@ -39,12 +39,13 @@ class HarvestResult extends React.Component {
             ))}
           </Col>
           <Col className={rightColClasses}>
-            <BrowserCard
-              url={portalUrl}
-              captionPosition={"bottom"}
-              collapse={this.state.fullPageCardCollapse}
-              toggleCollapse={this.toggleFullPageCardCollapse}
-            />
+            <Collapse open={this.state.browserActive}>
+              <BrowserCard url={portalUrl} />
+            </Collapse>
+            <Button outline onClick={this.toggleBrowser}>
+              <i className={"material-icons"}>pageview</i>
+              浏览器
+            </Button>
           </Col>
         </Row>
       </Container>
