@@ -8,6 +8,7 @@ import {HarvestApi} from "../services";
 import PageTitle from "../components/common/PageTitle";
 import type {HarvestTaskStatusType} from "../lib/HarvestTaskStatusType";
 import {RingLoader} from "react-spinners";
+import {formatPercentage} from "../lib/harvest"
 
 let auth = Store.getAuth()
 const clientTemplate = {
@@ -27,7 +28,11 @@ let defaultHarvestStatus: HarvestTaskStatusType = {
 }
 
 function getTaskStatusRequest(id) {
-  return {"username": clientTemplate.username, "authToken": clientTemplate.authToken, "id": id}
+  return {
+    "username": clientTemplate.username,
+    "authToken": clientTemplate.authToken,
+    "id": id
+  }
 }
 
 class HarvestPage extends React.Component {
@@ -76,11 +81,6 @@ class HarvestPage extends React.Component {
   onPortalUrlChange() {
     let portalUrl = Store.getPortalUrl()
 
-    console.log("changed to 1: " + Store.getPortalUrl())
-    if (portalUrl === this.state.portalUrl) {
-      return
-    }
-
     this.setState({
       ...this.state,
       portalUrl: portalUrl,
@@ -102,7 +102,7 @@ class HarvestPage extends React.Component {
     HarvestApi.query(request).then((taskId) => {
       console.log("Task id: " + taskId)
 
-      this.setState({ taskId: taskId })
+      this.setState({taskId: taskId})
       this.getHarvestTaskStatus(taskId)
     }).catch(function (ex) {
       console.log('Response parsing failed. Error: ', ex);
@@ -112,6 +112,7 @@ class HarvestPage extends React.Component {
   getHarvestTaskStatus(id) {
     let request = getTaskStatusRequest(id)
     let component = this
+    let portalUrl = this.state.portalUrl
     this.timer = setInterval(() => {
       ++component.tick
 
@@ -123,13 +124,15 @@ class HarvestPage extends React.Component {
 
         let message = ""
         let statusCode = taskStatus.statusCode
-        if (statusCode === 404) {
+        if (!portalUrl.startsWith("http")) {
+          message = ""
+        } else if (statusCode === 404) {
           message = "加载中 ..."
         } else if (statusCode === 201) {
           message = "分析中 ..."
         }
 
-        if (component.tick > 60) {
+        if (component.tick > 180) {
           message = "刷新试试"
         }
 
@@ -158,42 +161,71 @@ class HarvestPage extends React.Component {
   }
 
   render() {
-    let taskStatus = this.state.harvestTaskStatus
-    let statusCode = taskStatus.statusCode
-
     return (
       <Row>
         <Col className="p-0">
-          <MainNavbar defaultUrl={this.state.portalUrl} stickyTop={true} devtoolsSwitch={true} />
+          <MainNavbar defaultUrl={this.state.portalUrl} stickyTop={true}
+                      devtoolsSwitch={true}/>
           {
-            (statusCode !== 200) ? this.renderLoading(taskStatus) : this.renderHarvestResult()
+            (this.state.portalUrl === "") ? this.renderTip() : this.renderLoadingOrResult()
           }
         </Col>
       </Row>
     )
   }
 
+  renderTip() {
+    return (
+      <Container fluid>
+        <Row noGutters className="page-header py-4">
+          <PageTitle title="柏拉图 AI 浏览器" subtitle={this.state.message}
+                     className="text-sm-left mb-3"/>
+        </Row>
+
+        <Row className="page-loading align-items-center h-100">
+          <div className="mx-auto">
+            <div className="jumbotron text-center">
+              请输入一个入口链接，我们将从该链接出发将整个站点还原为数据。
+            </div>
+          </div>
+        </Row>
+      </Container>
+    )
+  }
+
+  renderLoadingOrResult() {
+    let taskStatus = this.state.harvestTaskStatus
+    let statusCode = taskStatus.statusCode
+
+    return <div>
+      {
+        (statusCode !== 200) ? this.renderLoading(taskStatus) : this.renderHarvestResult()
+      }
+    </div>
+  }
+
   renderHarvestResult() {
     return (
       !this.state.devMode ?
-      <HarvestResult
-        portalUrl={this.state.portalUrl}
-        args={this.state.clientTemplate.args}
-        tables={this.getTables()}
-      /> :
+        <HarvestResult
+          portalUrl={this.state.portalUrl}
+          args={this.state.clientTemplate.args}
+          tables={this.getTables()}
+        /> :
         <HarvestDevtools
           portalUrl={this.state.portalUrl}
           args={this.state.clientTemplate.args}
           tables={this.getTables()}
         />
-      )
+    )
   }
 
   renderLoading(taskStatus) {
     return (
       <Container fluid>
         <Row noGutters className="page-header py-4">
-          <PageTitle title="柏拉图 AI 浏览器" subtitle={this.state.message} className="text-sm-left mb-3" />
+          <PageTitle title="柏拉图 AI 浏览器" subtitle={this.state.message}
+                     className="text-sm-left mb-3"/>
         </Row>
 
         <Row className="page-loading align-items-center h-100">
@@ -209,14 +241,16 @@ class HarvestPage extends React.Component {
             <div className="jumbotron">
               {
                 (taskStatus.ntotalPages == null || taskStatus.ntotalPages === 0)
-                ?
-                (<div>正在分析中 。。。</div>)
-                :
-                (
-                  (taskStatus.nsuccessPages >= taskStatus.ntotalPages) ? (<div>正在解读网页集。。。</div>) :
-                    (<div>正在访问第 {taskStatus.nsuccessPages}/{taskStatus.ntotalPages} 个网页
-                    - {formatPercentage(100 * taskStatus.nsuccessPages / taskStatus.ntotalPages)}</div>)
-                )
+                  ?
+                  (<div>正在分析中 。。。</div>)
+                  :
+                  (
+                    (taskStatus.nsuccessPages >= taskStatus.ntotalPages) ? (
+                        <div>正在解读网页集。。。</div>) :
+                      (
+                        <div>正在访问第 {taskStatus.nsuccessPages}/{taskStatus.ntotalPages} 个网页
+                          - {formatPercentage(100 * taskStatus.nsuccessPages / taskStatus.ntotalPages)}</div>)
+                  )
               }
             </div>
           </div>
@@ -224,10 +258,6 @@ class HarvestPage extends React.Component {
       </Container>
     )
   }
-}
-
-function formatPercentage(num) {
-  return Number(num / 100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:1})
 }
 
 export default HarvestPage;

@@ -56,7 +56,6 @@ class Store extends EventEmitter {
 
   changePortalUrl(portalUrl) {
     _store.portalUrl = portalUrl
-    console.log("changePortalUrl " + _store.portalUrl)
     this.emit(Constants.CHANGE);
   }
 
