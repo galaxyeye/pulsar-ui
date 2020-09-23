@@ -18,7 +18,7 @@ export default [
     path: "/",
     exact: true,
     layout: DefaultLayout,
-    component: () => <Redirect to="home.html" />
+    component: () => <Redirect to="/auto-web-mining" />
   },
   {
     path: "/blog-overview",

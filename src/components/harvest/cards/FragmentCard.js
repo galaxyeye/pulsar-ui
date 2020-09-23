@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import HtmlContent from "../../analyse-page/HtmlContent";
 import {Store} from "../../../flux";
 import {W3DocApi} from "../../../services";
-import {findSampleUrlFromTable} from "../../../lib/harvest";
+import {findSampleUrlFromTable} from "../../../lib/utils";
 
 const base64url = require('base64-url')
 

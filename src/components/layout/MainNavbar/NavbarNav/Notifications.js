@@ -43,11 +43,11 @@ export default class Notifications extends React.Component {
               </div>
             </div>
             <div className="notification__content">
-              <span className="notification__category">Analytics</span>
+              <span className="notification__category">性能提升</span>
               <p>
-                Your website’s active users count increased by{" "}
-                <span className="text-success text-semibold">28%</span> in the
-                last week. Great job!
+                现在使用柏拉图，将 Web 数据使用效率提升到
+                <span className="text-success text-semibold">1000%</span>
+                ！
               </p>
             </div>
           </DropdownItem>
@@ -58,16 +58,15 @@ export default class Notifications extends React.Component {
               </div>
             </div>
             <div className="notification__content">
-              <span className="notification__category">Sales</span>
+              <span className="notification__category">成本削减</span>
               <p>
-                Last week your store’s sales count decreased by{" "}
-                <span className="text-danger text-semibold">5.52%</span>. It
-                could have been worse!
+                使用柏拉图全新的 Web SQL 引擎，基于 Web 的 BI 项目成本削减
+                <span className="text-danger text-semibold">50%</span>
               </p>
             </div>
           </DropdownItem>
           <DropdownItem className="notification__all text-center">
-            View all Notifications
+            所有消息
           </DropdownItem>
         </Collapse>
       </NavItem>

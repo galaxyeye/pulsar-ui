@@ -7,7 +7,7 @@ import {HarvestApi} from "../../services";
 import PageTitle from "../../components/common/PageTitle";
 import type {HarvestTaskStatusType} from "../../lib/HarvestTaskStatusType";
 import {RingLoader} from "react-spinners";
-import {formatPercentage} from "../../lib/harvest"
+import {formatPercentage, isUrl} from "../../lib/utils"
 import PropTypes from "prop-types";
 
 let auth = Store.getAuth()
@@ -99,7 +99,9 @@ class HarvestMain extends React.Component {
     let component = this
     let portalUrl = this.state.portalUrl
     this.timer = setInterval(() => {
-      ++component.tick
+      if (!this.adjustInterval(++component.tick, component.timer)) {
+        return
+      }
 
       HarvestApi.get(request).then((taskStatus) => {
         console.log("status:  " + taskStatus.statusCode
@@ -107,35 +109,20 @@ class HarvestMain extends React.Component {
           + " " + taskStatus.nsuccessPages)
         // console.log(JSON.stringify(taskStatus))
 
-        let message = ""
-        let statusCode = taskStatus.statusCode
-        if (portalUrl === "") {
-          message = ""
-        } else if (!portalUrl.startsWith("http")) {
-          message = "请输入一个有效链接 ..."
-        } else if (statusCode === 404) {
-          message = "加载中 ..."
-        } else if (statusCode === 201) {
-          message = "分析中 ..."
-        }
-
-        if (component.tick > 180) {
-          message = "刷新试试"
-        }
-
+        let message = this.buildMessage(component.tick, portalUrl, taskStatus)
         this.setState({
           ...this.state,
           message: message,
           harvestTaskStatus: taskStatus
         })
 
-        if (statusCode === 200 || component.tick > 180) {
+        if (taskStatus.statusCode === 200) {
           clearInterval(component.timer)
         }
       }).catch(function (ex) {
         console.log('Response parsing failed. Error: ', ex);
       });
-    }, 2000)
+    }, 1000)
   }
 
   getTables() {
@@ -145,6 +132,45 @@ class HarvestMain extends React.Component {
     } else {
       return []
     }
+  }
+
+  adjustInterval(tick: number, timer: number) {
+    if (tick > 180) {
+      clearInterval(timer)
+      return false
+    } else if (tick > 120 && tick % 20 === 0) {
+      return false
+    } else if (tick > 60 && tick % 10 === 0) {
+      return false
+    } else if (tick > 30 && tick % 5 === 0) {
+      return false
+    } else if (tick > 20 && tick % 3 === 0) {
+      return false
+    } else if (tick % 2 === 0) {
+      return false
+    }
+
+    return true
+  }
+
+  buildMessage(tick: number, portalUrl: string, taskStatus: HarvestTaskStatusType) {
+    let message = ""
+    let statusCode = taskStatus.statusCode
+    if (portalUrl === "") {
+      message = "你好，世界"
+    } else if (!isUrl(portalUrl)) {
+      message = "请输入一个有效链接 ..."
+    } else if (statusCode === 404) {
+      message = "加载中 ..."
+    } else if (statusCode === 201) {
+      message = "分析中 ..."
+    }
+
+    if (tick > 180) {
+      message = "刷新试试"
+    }
+
+    return message
   }
 
   render() {
@@ -158,7 +184,9 @@ class HarvestMain extends React.Component {
       <Row>
         <Col className="p-0">
           {
-            (statusCode !== 200) ? this.renderLoading(taskStatus, message) : this.renderHarvestResult(devMode, tables)
+            (statusCode !== 200)
+              ? this.renderLoading(taskStatus, message)
+              : this.renderHarvestResult(devMode, tables)
           }
         </Col>
       </Row>
@@ -185,8 +213,7 @@ class HarvestMain extends React.Component {
     return (
       <Container fluid>
         <Row noGutters className="page-header py-4">
-          <PageTitle title="柏拉图 AI 浏览器" subtitle={message}
-                     className="text-sm-left mb-3"/>
+          <PageTitle title="柏拉图 AI 浏览器" subtitle={message} className="text-sm-left mb-3"/>
         </Row>
 
         <Row className="page-loading align-items-center h-100">
