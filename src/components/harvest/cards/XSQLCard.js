@@ -1,13 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Collapse, Container,
-  FormGroup
-} from "shards-react";
+import {Button, Card, CardBody, Container, FormGroup} from "shards-react";
 import {UnControlled as CodeMirror} from "react-codemirror2";
 import {defaultCardBodyClassName, defaultCardClassName} from "./common";
 

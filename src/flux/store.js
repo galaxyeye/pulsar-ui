@@ -4,13 +4,13 @@ import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import getSidebarNavItems from "../data/sidebar-nav-items";
 import getHarvestStatus from "../data/harvest-status";
-import getAuth from "../data/userAuth";
+import Config from "../config";
 
 let _store = {
   menuVisible: false,
   apiHost: "http://localhost:8182",
   portalUrl: "https://www.amazon.com/b?node=3117954011",
-  auth: getAuth(),
+  auth: Config().auth,
   navItems: getSidebarNavItems(),
   harvestStatus: getHarvestStatus(),
   devMode: false

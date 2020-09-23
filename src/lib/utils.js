@@ -1,7 +1,7 @@
 import type {TableType} from "./HarvestTaskStatusType";
 import React from "react";
 
-export const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+export const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/;
 
 export function formatPercentage(num) {
   return Number(num / 100).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:1})

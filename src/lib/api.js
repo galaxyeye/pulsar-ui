@@ -6,6 +6,8 @@ import EventEmitter from "events";
 
 import {delay} from "./promise";
 
+import Config from "../config"
+
 type TransformFn = (o: any) => any;
 
 export type Options = {
@@ -43,7 +45,9 @@ const DEFAULT_OPTIONS: Options = {
 export type APIMethod = (d?: Data, o?: Options) => Promise<any>;
 export type APICreator = (t: string, o?: Options | TransformFn) => APIMethod;
 
-export const REST_API_BASE_URI = 'http://localhost:8182';
+function getRestApiBaseURI() {
+  return (process.env.NODE_ENV === 'production') ? Config().apiServer.product : Config().apiServer.dev;
+}
 
 export class Api extends EventEmitter {
   basename: "";
@@ -60,13 +64,13 @@ export class Api extends EventEmitter {
     this.POST = this._makeMethod("POST", { hasBody: true, retry: true });
     this.PUT = this._makeMethod("PUT", { hasBody: true });
 
-    this.basename = REST_API_BASE_URI
+    this.basename = getRestApiBaseURI()
   }
 
-  _makeMethod(method: string, creatorOptions?: Options = {}): APICreator {
+  _makeMethod(method: string, creatorOptions?: Options): APICreator {
     return (
       urlTemplate: string,
-      methodOptions?: Options | TransformFn = {},
+      methodOptions?: Options | TransformFn,
     ) => {
       if (typeof methodOptions === "function") {
         methodOptions = { transformResponse: methodOptions };
@@ -80,7 +84,7 @@ export class Api extends EventEmitter {
 
       return async (
         data?: Data,
-        invocationOptions?: Options = {},
+        invocationOptions?: Options,
       ): Promise<any> => {
         const options: Options = { ...defaultOptions, ...invocationOptions };
         let url = urlTemplate;
@@ -100,8 +104,10 @@ export class Api extends EventEmitter {
         }
         // remove undefined
         for (const name in data) {
-          if (data[name] === undefined) {
-            delete data[name];
+          if (data.hasOwnProperty(name)) {
+            if (data[name] === undefined) {
+              delete data[name];
+            }
           }
         }
 
