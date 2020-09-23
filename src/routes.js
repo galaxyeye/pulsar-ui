@@ -18,7 +18,17 @@ export default [
     path: "/",
     exact: true,
     layout: DefaultLayout,
-    component: () => <Redirect to="/auto-web-mining" />
+    component: () => <Redirect to="/ai" />
+  },
+  {
+    path: "/ai",
+    layout: HarvestLayout,
+    component: HarvestPage
+  },
+  {
+    path: "/errors",
+    layout: DefaultLayout,
+    component: Errors
   },
   {
     path: "/blog-overview",
@@ -34,16 +44,6 @@ export default [
     path: "/add-new-post",
     layout: DefaultLayout,
     component: AddNewPost
-  },
-  {
-    path: "/auto-web-mining",
-    layout: HarvestLayout,
-    component: HarvestPage
-  },
-  {
-    path: "/errors",
-    layout: DefaultLayout,
-    component: Errors
   },
   {
     path: "/components-overview",
