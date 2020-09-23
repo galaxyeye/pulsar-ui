@@ -6,6 +6,7 @@ import {Buffer} from "buffer";
 import {Store} from "../../../flux";
 import * as classnames from "classnames";
 import {defaultCardClassName} from "./common";
+import {getRestApiBaseURI} from "../../../lib/api";
 
 class BrowserCard extends React.Component {
 
@@ -39,7 +40,7 @@ class BrowserCard extends React.Component {
 
 function getW3DocApi(targetUrl) {
   let auth = Store.getAuth()
-  let api = Store.getApiHost() + "/api/w3doc?"
+  let api = getRestApiBaseURI() + "/api/w3doc?"
     + "url=" + Buffer.from(targetUrl).toString('base64')
     + "&proxyLinks=true"
     + "&authToken=" + auth.userToken

@@ -3,16 +3,13 @@ import {EventEmitter} from "events";
 import Dispatcher from "./dispatcher";
 import Constants from "./constants";
 import getSidebarNavItems from "../data/sidebar-nav-items";
-import getHarvestStatus from "../data/harvest-status";
 import Config from "../config";
 
 let _store = {
   menuVisible: false,
-  apiHost: "http://localhost:8182",
   portalUrl: "https://www.amazon.com/b?node=3117954011",
   auth: Config().auth,
   navItems: getSidebarNavItems(),
-  harvestStatus: getHarvestStatus(),
   devMode: false
 };
 
@@ -75,16 +72,8 @@ class Store extends EventEmitter {
     return _store.portalUrl;
   }
 
-  getHarvestStatus() {
-    return _store.harvestStatus;
-  }
-
   getDevMode() {
     return _store.devMode;
-  }
-
-  getApiHost() {
-    return _store.apiHost;
   }
 
   addChangeListener(callback) {

@@ -45,7 +45,7 @@ const DEFAULT_OPTIONS: Options = {
 export type APIMethod = (d?: Data, o?: Options) => Promise<any>;
 export type APICreator = (t: string, o?: Options | TransformFn) => APIMethod;
 
-function getRestApiBaseURI() {
+export function getRestApiBaseURI() {
   return (process.env.NODE_ENV === 'production') ? Config().apiServer.product : Config().apiServer.dev;
 }
 

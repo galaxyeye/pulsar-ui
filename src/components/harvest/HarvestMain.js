@@ -9,13 +9,14 @@ import type {HarvestTaskStatusType} from "../../lib/HarvestTaskStatusType";
 import {RingLoader} from "react-spinners";
 import {formatPercentage, isUrl} from "../../lib/utils"
 import PropTypes from "prop-types";
+import {getRestApiBaseURI} from "../../lib/api";
 
 let auth = Store.getAuth()
 const clientTemplate = {
   username: auth.username,
   authToken: auth.authToken,
   args: "-i 1d -ii 365d -ol a[href~=/dp/] -diagnose -vj",
-  apiEntry: Store.getApiHost() + "/api",
+  apiEntry: getRestApiBaseURI() + "/api",
   proxyLinks: true
 }
 
@@ -52,6 +53,7 @@ class HarvestMain extends React.Component {
     this.onPortalUrlChange = this.onPortalUrlChange.bind(this);
     this.submitTask = this.submitTask.bind(this);
     this.getHarvestTaskStatus = this.getHarvestTaskStatus.bind(this);
+    this.clearRequestInterval = this.clearRequestInterval.bind(this);
     this.getTables = this.getTables.bind(this);
   }
 
@@ -62,7 +64,7 @@ class HarvestMain extends React.Component {
 
   componentWillUnmount() {
     Store.removePortalUrlChangeListener(this.onPortalUrlChange);
-    clearInterval(this.timer)
+    this.clearRequestInterval()
   }
 
   onPortalUrlChange() {
@@ -117,7 +119,7 @@ class HarvestMain extends React.Component {
         })
 
         if (taskStatus.statusCode === 200) {
-          clearInterval(component.timer)
+          this.clearRequestInterval()
         }
       }).catch(function (ex) {
         console.log('Response parsing failed. Error: ', ex);
@@ -151,6 +153,11 @@ class HarvestMain extends React.Component {
     }
 
     return true
+  }
+
+  clearRequestInterval() {
+    this.tick = 0
+    clearInterval(this.timer)
   }
 
   buildMessage(tick: number, portalUrl: string, taskStatus: HarvestTaskStatusType) {
