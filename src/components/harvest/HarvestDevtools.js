@@ -80,7 +80,7 @@ class HarvestDevtools extends React.Component {
     return (
       <Container className={"tables"} fluid>
         <Row>
-          <Col className={"col-2"}>
+          <Col className={"col-lg-2 col-sm-12"}>
             <ListGroup>
               <ListGroupItem className={"shadow-none rounded-0 border-0"}>
                 网页区域
@@ -92,7 +92,7 @@ class HarvestDevtools extends React.Component {
             </ListGroup>
           </Col>
 
-          <Col className={"col-10 vh-100 w-100"}>
+          <Col className={"col-lg-10 vh-100 w-100"}>
             <Collapse open={this.state.tablePanel.active}>
               <Row className={"h-50"} >
                 <PageTableCard table={table} tableIndex={tableIndex}/>

@@ -220,7 +220,7 @@ class HarvestMain extends React.Component {
     return (
       <Container fluid>
         <Row noGutters className="page-header py-4">
-          <PageTitle title="柏拉图 AI 浏览器" subtitle={message} className="text-sm-left mb-3"/>
+          <PageTitle title="柏拉图 AI 浏览器" subtitle={message} className="text-sm-left mb-3 ml-3"/>
         </Row>
 
         <Row className="page-loading align-items-center h-100">
@@ -233,7 +233,7 @@ class HarvestMain extends React.Component {
                 loading={this.state.statusCode !== 200}
               />
             </div>
-            <div className="jumbotron">
+            <div className="jumbotron mt-0">
               {
                 (taskStatus.ntotalPages == null || taskStatus.ntotalPages === 0)
                   ?

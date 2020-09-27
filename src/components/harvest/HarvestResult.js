@@ -24,11 +24,11 @@ class HarvestResult extends React.Component {
   render() {
     const leftColClasses = classNames(
       "px-0 m-0",
-      this.state.browserActive ? "col-6" : "col-11"
+      this.state.browserActive ? "col-lg-6" : "col-lg-11 col-sm-12"
     );
     const rightColClasses = classNames(
       "px-0 m-0 bg-white",
-      this.state.browserActive ? "col-6" : "col"
+      this.state.browserActive ? "col-lg-6" : "col-lg-1"
     );
 
     let {tables, portalUrl} = this.props;
