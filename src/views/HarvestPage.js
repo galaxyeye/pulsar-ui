@@ -37,7 +37,7 @@ class HarvestPage extends React.Component {
     let params = new URLSearchParams(this.props.location.search);
     let portalUrl = params.get("url")
 
-    if (!isUrl(portalUrl)) {
+    if (portalUrl && !isUrl(portalUrl)) {
       portalUrl = atob(portalUrl);
     }
 
@@ -46,7 +46,7 @@ class HarvestPage extends React.Component {
         <Col className="p-0">
           <MainNavbar defaultUrl={portalUrl} stickyTop={true} devtoolsSwitch={true}/>
           {
-            (portalUrl === "")
+            (!portalUrl)
               ?
               this.renderTip(this.state.message)
               :

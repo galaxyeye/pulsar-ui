@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {formatTableCell} from "../utils";
+import {formatTableCell, isUrl} from "../utils";
 
 const FlatTable = ({ table, tableIndex }) => (
   <table className="table table-sm table-flat">
@@ -18,7 +18,7 @@ const FlatTable = ({ table, tableIndex }) => (
       <tr key={i}>
         <td>{i + 1}</td>
         {row.map((value, li) => (
-          <td key={`C${li}`}>{formatTableCell(value)}</td>
+          <td key={`C${li}`} title={value}>{formatTableCell(value)}</td>
         ))}
       </tr>)
     )}
