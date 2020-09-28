@@ -50,7 +50,6 @@ class HarvestMain extends React.Component {
     this.timer = null;
     this.tick = 0;
 
-    this.onPortalUrlChange = this.onPortalUrlChange.bind(this);
     this.submitTask = this.submitTask.bind(this);
     this.getHarvestTaskStatus = this.getHarvestTaskStatus.bind(this);
     this.clearRequestInterval = this.clearRequestInterval.bind(this);
@@ -59,24 +58,10 @@ class HarvestMain extends React.Component {
 
   componentDidMount() {
     this.submitTask(this.state.portalUrl)
-    Store.addPortalUrlChangeListener(this.onPortalUrlChange);
   }
 
   componentWillUnmount() {
-    Store.removePortalUrlChangeListener(this.onPortalUrlChange);
     this.clearRequestInterval()
-  }
-
-  onPortalUrlChange() {
-    let portalUrl = Store.getPortalUrl()
-
-    this.setState({
-      ...this.state,
-      portalUrl: portalUrl,
-      harvestTaskStatus: defaultHarvestStatus
-    });
-
-    this.submitTask(portalUrl)
   }
 
   submitTask(portalUrl) {

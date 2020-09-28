@@ -1,16 +1,16 @@
 import React from "react";
-import {Store} from "../flux";
+import {Constants, Dispatcher, Store} from "../flux";
 import {Col, Container, Row} from "shards-react";
 import MainNavbar from "../components/layout/MainNavbar/MainNavbar";
 import PageTitle from "../components/common/PageTitle";
 import HarvestMain from "../components/harvest/HarvestMain";
+import {isUrl} from "../lib/utils";
 
 class HarvestPage extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      portalUrl: Store.getPortalUrl(),
       message: "加载中 ...",
       devMode: Store.getDevMode()
     };
@@ -34,7 +34,13 @@ class HarvestPage extends React.Component {
   }
 
   render() {
-    let portalUrl = this.state.portalUrl
+    let params = new URLSearchParams(this.props.location.search);
+    let portalUrl = params.get("url")
+
+    if (!isUrl(portalUrl)) {
+      portalUrl = atob(portalUrl);
+    }
+
     return (
       <Row>
         <Col className="p-0">

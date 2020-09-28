@@ -7,7 +7,6 @@ import Config from "../config";
 
 let _store = {
   menuVisible: false,
-  portalUrl: "https://www.amazon.com/gp/bestsellers/electronics/565108",
   auth: Config().auth,
   navItems: getSidebarNavItems(),
   devMode: false
@@ -20,7 +19,6 @@ class Store extends EventEmitter {
     this.registerToActions = this.registerToActions.bind(this);
     this.toggleSidebar = this.toggleSidebar.bind(this);
     this.toggleDevtools = this.toggleDevtools.bind(this);
-    this.changePortalUrl = this.changePortalUrl.bind(this);
 
     Dispatcher.register(this.registerToActions.bind(this));
   }
@@ -32,9 +30,6 @@ class Store extends EventEmitter {
         break;
       case Constants.TOGGLE_DEVTOOLS:
         this.toggleDevtools();
-        break;
-      case Constants.CHANGE_PORTAL_URL:
-        this.changePortalUrl(payload);
         break;
       default:
     }
@@ -48,11 +43,6 @@ class Store extends EventEmitter {
   toggleDevtools() {
     _store.devMode = !_store.devMode;
     console.log("Store.toggleDevtools " + _store.devMode)
-    this.emit(Constants.CHANGE);
-  }
-
-  changePortalUrl(portalUrl) {
-    _store.portalUrl = portalUrl
     this.emit(Constants.CHANGE);
   }
 
