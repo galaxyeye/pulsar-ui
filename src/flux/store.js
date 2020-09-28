@@ -7,7 +7,7 @@ import Config from "../config";
 
 let _store = {
   menuVisible: false,
-  portalUrl: "https://www.amazon.com/b?node=3117954011",
+  portalUrl: "https://www.amazon.com/gp/bestsellers/electronics/565108",
   auth: Config().auth,
   navItems: getSidebarNavItems(),
   devMode: false
