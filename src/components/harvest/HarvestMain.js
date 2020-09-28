@@ -15,9 +15,8 @@ let auth = Store.getAuth()
 const clientTemplate = {
   username: auth.username,
   authToken: auth.authToken,
-  args: "-i 1d -ii 365d -ol a[href~=/dp/] -diagnose -vj",
-  apiEntry: getRestApiBaseURI() + "/api",
-  proxyLinks: true
+  args: "-i 365d -ii 365d -diagnose -vj",
+  apiEntry: getRestApiBaseURI() + "/api"
 }
 
 let defaultHarvestStatus: HarvestTaskStatusType = {
@@ -66,7 +65,8 @@ class HarvestMain extends React.Component {
 
   submitTask(portalUrl) {
     let request = this.state.clientTemplate
-    if (!portalUrl.startsWith("http")) {
+    if (!isUrl(portalUrl)) {
+      console.log('A valid url is required | <' + portalUrl + '>')
       return
     }
 
@@ -74,7 +74,7 @@ class HarvestMain extends React.Component {
     HarvestApi.query(request).then((taskId) => {
       console.log("Task id: " + taskId)
 
-      this.setState({taskId: taskId})
+      this.setState({...this.state, taskId: taskId})
       this.getHarvestTaskStatus(taskId)
     }).catch(function (ex) {
       console.log('Response parsing failed. Error: ', ex);
@@ -83,10 +83,9 @@ class HarvestMain extends React.Component {
 
   getHarvestTaskStatus(id) {
     let request = getTaskStatusRequest(id)
-    let component = this
     let portalUrl = this.state.portalUrl
     this.timer = setInterval(() => {
-      if (!this.adjustInterval(++component.tick, component.timer)) {
+      if (!this.adjustInterval(++this.tick, this.timer)) {
         return
       }
 
@@ -94,9 +93,8 @@ class HarvestMain extends React.Component {
         console.log("status:  " + taskStatus.statusCode
           + " " + taskStatus.ntotalPages
           + " " + taskStatus.nsuccessPages)
-        // console.log(JSON.stringify(taskStatus))
 
-        let message = this.buildMessage(component.tick, portalUrl, taskStatus)
+        let message = this.buildMessage(this.tick, portalUrl, taskStatus)
         this.setState({
           ...this.state,
           message: message,

@@ -38,7 +38,7 @@ class HarvestPage extends React.Component {
     let portalUrl = params.get("url")
 
     if (portalUrl && !isUrl(portalUrl)) {
-      portalUrl = atob(portalUrl);
+      portalUrl = decodeURIComponent(atob(portalUrl));
     }
 
     return (

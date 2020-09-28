@@ -27,7 +27,8 @@ class NavbarSearch extends React.Component {
         return
       }
 
-      window.location = "/" + this.appBase + "/ai?url=" + btoa(targetUrl)
+      const base = this.appBase ? ("/" + this.appBase) : ""
+      window.location = base + "/ai?url=" + encodeURIComponent(btoa(targetUrl))
     }
   }
 
