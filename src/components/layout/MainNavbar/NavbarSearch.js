@@ -15,24 +15,21 @@ class NavbarSearch extends React.Component {
   constructor(props) {
     super(props);
 
+    this.rootUri = process.env.REACT_APP_BASENAME || ""
     this.handleKeyDown = this.handleKeyDown.bind(this);
-
-    this.state = {
-      portalUrl: this.props.defaultUrl
-    }
   }
 
-  handleKeyDown(event: Event) {
+  handleKeyDown(event) {
     if (event.key === 'Enter') {
       event.preventDefault()
 
-      let targetUrl = event.target.value
+      let targetUrl = event.target.value.trim()
 
       if (!isUrl(targetUrl)) {
         return
       }
 
-      window.location = "/ai?url=" + btoa(targetUrl)
+      window.location = this.rootUri + "/ai?url=" + btoa(targetUrl)
     }
   }
 
@@ -48,7 +45,7 @@ class NavbarSearch extends React.Component {
           <FormInput
             className="navbar-search"
             placeholder="输入一个链接 ..."
-            defaultValue={this.state.portalUrl}
+            defaultValue={this.props.defaultUrl}
             onKeyDown={(e) => this.handleKeyDown(e)}
           />
         </InputGroup>
