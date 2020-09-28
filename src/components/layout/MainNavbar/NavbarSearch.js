@@ -6,8 +6,6 @@ import {
   InputGroupAddon,
   InputGroupText
 } from "shards-react";
-
-import {Constants, Dispatcher, Store} from "../../../flux";
 import PropTypes from "prop-types";
 import {isUrl} from "../../../lib/utils";
 
@@ -15,7 +13,7 @@ class NavbarSearch extends React.Component {
   constructor(props) {
     super(props);
 
-    this.rootUri = process.env.REACT_APP_BASENAME || ""
+    this.appBase = process.env.REACT_APP_BASENAME || ""
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
@@ -29,7 +27,7 @@ class NavbarSearch extends React.Component {
         return
       }
 
-      window.location = this.rootUri + "/ai?url=" + btoa(targetUrl)
+      window.location = "/" + this.appBase + "/ai?url=" + btoa(targetUrl)
     }
   }
 
