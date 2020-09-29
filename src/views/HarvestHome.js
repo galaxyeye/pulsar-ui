@@ -13,7 +13,7 @@ class HarvestHome extends React.Component {
     super(props)
 
     this.state = {
-      message: "加载中 ...",
+      message: "输入一个列表页链接 ...",
       hotLinks: getHotLinks(),
       devMode: Store.getDevMode()
     };
@@ -89,10 +89,8 @@ class HarvestHome extends React.Component {
         </Row>
 
         <Row className="page-loading align-items-center h-100">
-          <div className="mx-auto w-50">
-            <div className="jumbotron">
-              <NavbarSearch className={"main__search"} />
-            </div>
+          <Col className="mx-auto col-md-8 col-sm-auto">
+            <NavbarSearch className={"main__search"} />
             <div className="jumbotron mt-0">
               <Navbar type="light" className="mx-auto mt-3 align-items-stretch flex-md-nowrap p-0">
                 {hotLinks.map((link, i) => (
@@ -100,7 +98,7 @@ class HarvestHome extends React.Component {
                 ))}
               </Navbar>
             </div>
-          </div>
+          </Col>
         </Row>
       </Container>
     )

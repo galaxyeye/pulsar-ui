@@ -34,10 +34,10 @@ class NavbarSearch extends React.Component {
   }
 
   render() {
-    let className = classnames(this.props.className, "w-100 d-none d-md-flex d-lg-flex")
+    let className = classnames(this.props.className, "w-100 d-md-flex d-lg-flex")
     return (
       <Form className={className}>
-        <InputGroup seamless className="ml-3">
+        <InputGroup seamless>
           <InputGroupAddon type="prepend">
             <InputGroupText>
               <i className="material-icons">search</i>
@@ -45,7 +45,7 @@ class NavbarSearch extends React.Component {
           </InputGroupAddon>
           <FormInput
             className="navbar-search"
-            placeholder="输入一个链接 ..."
+            placeholder="输入一个列表页链接 ..."
             defaultValue={this.props.defaultUrl}
             onKeyDown={(e) => this.handleKeyDown(e)}
           />
