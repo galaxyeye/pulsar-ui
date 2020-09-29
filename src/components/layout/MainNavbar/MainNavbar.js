@@ -1,18 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import {Container, Nav, Navbar, NavLink} from "shards-react";
-
-import NavbarSearch from "./NavbarSearch";
+import {Container, Navbar} from "shards-react";
 import NavbarToggle from "./NavbarToggle";
-import NavbarNav from "./NavbarNav/NavbarNav";
 import {Link} from "react-router-dom";
+import NavbarSearch from "./NavbarSearch";
+import NavbarNav from "./NavbarNav/NavbarNav";
 
 {/* font: https://material.io/resources/icons/?icon=build&style=baseline*/ }
 
 const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
-  const appBase = process.env.REACT_APP_BASENAME || ""
-  const appHome = appBase + "/"
   const classes = classNames(
     "main-navbar",
     "bg-white",
@@ -27,6 +24,8 @@ const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
           <Link to={"/"} className="border-left border-right nav-link-icon d-sm-inline text-center nav-link">
             <i className="material-icons" title={'首页'}>home</i>
           </Link>
+          <NavbarSearch className={"main-navbar__search"} defaultUrl={defaultUrl} />
+          <NavbarNav />
           <NavbarToggle />
         </Navbar>
       </Container>
