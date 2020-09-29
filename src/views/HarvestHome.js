@@ -8,7 +8,7 @@ import getHotLinks from "../data/hot-links";
 import NavbarSearch from "../components/layout/MainNavbar/NavbarSearch";
 import {HotLinkApi} from "../services";
 
-class HarvestPage extends React.Component {
+class HarvestHome extends React.Component {
   constructor(props) {
     super(props)
 
@@ -107,4 +107,4 @@ class HarvestPage extends React.Component {
   }
 }
 
-export default HarvestPage;
+export default HarvestHome;

@@ -6,10 +6,13 @@ import {Container, Nav, Navbar, NavLink} from "shards-react";
 import NavbarSearch from "./NavbarSearch";
 import NavbarToggle from "./NavbarToggle";
 import NavbarNav from "./NavbarNav/NavbarNav";
+import {Link} from "react-router-dom";
 
 {/* font: https://material.io/resources/icons/?icon=build&style=baseline*/ }
 
 const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
+  const appBase = process.env.REACT_APP_BASENAME || ""
+  const appHome = appBase + "/"
   const classes = classNames(
     "main-navbar",
     "bg-white",
@@ -21,10 +24,9 @@ const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
     <div className={classes}>
       <Container className="p-0">
         <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
-          <NavLink navbar className="border-left border-right nav-link-icon d-sm-inline text-center" href={"/"}>
-            <i className="material-icons" title={'首页'}>home</i></NavLink>
-          <NavbarSearch className={"main-navbar__search"} defaultUrl={defaultUrl} />
-          <NavbarNav />
+          <Link to={"/"} className="border-left border-right nav-link-icon d-sm-inline text-center nav-link">
+            <i className="material-icons" title={'首页'}>home</i>
+          </Link>
           <NavbarToggle />
         </Navbar>
       </Container>

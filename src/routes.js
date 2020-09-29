@@ -10,7 +10,7 @@ import Errors from "./views/Errors";
 import ComponentsOverview from "./views/ComponentsOverview";
 import Tables from "./views/Tables";
 import BlogPosts from "./views/BlogPosts";
-import HarvestPage from "./views/HarvestPage";
+import HarvestHome from "./views/HarvestHome";
 import HarvestLayout from "./layouts/Harvest";
 
 export default [
@@ -23,7 +23,7 @@ export default [
   {
     path: "/ai",
     layout: HarvestLayout,
-    component: HarvestPage
+    component: HarvestHome
   },
   {
     path: "/errors",
