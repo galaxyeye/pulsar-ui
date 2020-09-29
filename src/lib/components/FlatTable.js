@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {formatTableCell, isUrl} from "../utils";
+import {formatTableCell} from "../utils";
 
 const FlatTable = ({ table, tableIndex }) => (
   <table className="table table-sm table-flat">
@@ -35,9 +35,9 @@ FlatTable.propTypes = {
 
 FlatTable.defaultProps = {
   table: {
-    "numColumns": 98,
-    "numRows": 20,
-    "hyperPath": "#pdd",
+    "numColumns": 0,
+    "numRows": 0,
+    "hyperPath": "#component",
     "rows": [],
     "tableData": {},
     "columnData": {}

@@ -1,10 +1,12 @@
 import React from "react";
-import {Constants, Dispatcher, Store} from "../flux";
-import {Col, Container, Row} from "shards-react";
-import MainNavbar from "../components/layout/MainNavbar/MainNavbar";
+import {Store} from "../flux";
+import {Col, Container, Navbar, NavLink, Row} from "shards-react";
 import PageTitle from "../components/common/PageTitle";
 import HarvestMain from "../components/harvest/HarvestMain";
 import {isUrl} from "../lib/utils";
+import getHotLinks from "../data/hot-links";
+import NavbarSearch from "../components/layout/MainNavbar/NavbarSearch";
+import {HotLinkApi} from "../services";
 
 class HarvestPage extends React.Component {
   constructor(props) {
@@ -12,14 +14,20 @@ class HarvestPage extends React.Component {
 
     this.state = {
       message: "加载中 ...",
+      hotLinks: getHotLinks(),
       devMode: Store.getDevMode()
     };
 
+    this.appBase = process.env.REACT_APP_BASENAME || ""
     this.onDevModeChange = this.onDevModeChange.bind(this);
+    this.getHotLinks = this.getHotLinks.bind(this);
+    this.getHarvestUrl = this.getHarvestUrl.bind(this);
   }
 
   componentDidMount() {
     Store.addDevtoolsToggleListener(this.onDevModeChange);
+    // TODO: load hot links on the fly
+    // this.getHotLinks()
   }
 
   componentWillUnmount() {
@@ -33,6 +41,20 @@ class HarvestPage extends React.Component {
     });
   }
 
+  getHotLinks() {
+    HotLinkApi.get().then((hotLinks) => {
+      if (hotLinks && hotLinks.length > 0) {
+        this.setState({...this.state, hotLinks: hotLinks})
+      }
+    }).catch(function (ex) {
+      console.log('Response parsing failed. Error: ', ex);
+    });
+  }
+
+  getHarvestUrl(targetUrl) {
+    return "ai?url=" + encodeURIComponent(btoa(targetUrl))
+  }
+
   render() {
     let params = new URLSearchParams(this.props.location.search);
     let portalUrl = params.get("url")
@@ -44,11 +66,10 @@ class HarvestPage extends React.Component {
     return (
       <Row>
         <Col className="p-0">
-          <MainNavbar defaultUrl={portalUrl} stickyTop={true} devtoolsSwitch={true}/>
           {
             (!portalUrl)
               ?
-              this.renderTip(this.state.message)
+              this.renderWelcome(this.state.message)
               :
               (
                 <HarvestMain portalUrl={portalUrl} />
@@ -59,7 +80,8 @@ class HarvestPage extends React.Component {
     )
   }
 
-  renderTip(message) {
+  renderWelcome(message) {
+    const hotLinks = this.state.hotLinks
     return (
       <Container fluid>
         <Row noGutters className="page-header py-4">
@@ -67,9 +89,16 @@ class HarvestPage extends React.Component {
         </Row>
 
         <Row className="page-loading align-items-center h-100">
-          <div className="mx-auto">
-            <div className="jumbotron text-center">
-              请输入一个入口链接，我们将从该链接出发将整个站点还原为数据。
+          <div className="mx-auto w-50">
+            <div className="jumbotron">
+              <NavbarSearch className={"main__search"} />
+            </div>
+            <div className="jumbotron mt-0">
+              <Navbar type="light" className="mx-auto mt-3 align-items-stretch flex-md-nowrap p-0">
+                {hotLinks.map((link, i) => (
+                  <NavLink key={i} href={this.getHarvestUrl(link.href)}>{link.text}</NavLink>
+                ))}
+              </Navbar>
             </div>
           </div>
         </Row>

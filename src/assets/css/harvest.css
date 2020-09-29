@@ -1,5 +1,10 @@
 div.page-loading div.jumbotron { background-color: unset; margin-top: 20%; }
 
+form.main__search input {
+  font-size: large;
+  line-height: 2.5rem;
+}
+
 div.tables .message i {
   font-size: x-large;
   font-weight: bolder;
@@ -20,7 +25,7 @@ div.tables .message em {
 }
 
 div.table-container {
-  overflow: scroll;
+  overflow-x: scroll;
   height: 100%;
 }
 

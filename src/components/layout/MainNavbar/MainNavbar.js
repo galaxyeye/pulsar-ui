@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import {Container, Navbar} from "shards-react";
+import {Container, Nav, Navbar, NavLink} from "shards-react";
 
 import NavbarSearch from "./NavbarSearch";
 import NavbarToggle from "./NavbarToggle";
@@ -21,7 +21,9 @@ const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
     <div className={classes}>
       <Container className="p-0">
         <Navbar type="light" className="align-items-stretch flex-md-nowrap p-0">
-          <NavbarSearch defaultUrl={defaultUrl} />
+          <NavLink navbar className="border-left border-right nav-link-icon d-sm-inline text-center" href={"/"}>
+            <i className="material-icons" title={'首页'}>home</i></NavLink>
+          <NavbarSearch className={"main-navbar__search"} defaultUrl={defaultUrl} />
           <NavbarNav />
           <NavbarToggle />
         </Navbar>

@@ -10,6 +10,7 @@ import {RingLoader} from "react-spinners";
 import {formatPercentage, isUrl} from "../../lib/utils"
 import PropTypes from "prop-types";
 import {getRestApiBaseURI} from "../../lib/api";
+import MainNavbar from "../layout/MainNavbar/MainNavbar";
 
 let auth = Store.getAuth()
 const clientTemplate = {
@@ -173,6 +174,7 @@ class HarvestMain extends React.Component {
     return (
       <Row>
         <Col className="p-0">
+          <MainNavbar defaultUrl={this.state.portalUrl} stickyTop={true} devtoolsSwitch={true}/>
           {
             (statusCode !== 200)
               ? this.renderLoading(taskStatus, message)

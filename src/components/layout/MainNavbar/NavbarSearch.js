@@ -8,6 +8,7 @@ import {
 } from "shards-react";
 import PropTypes from "prop-types";
 import {isUrl} from "../../../lib/utils";
+import * as classnames from "classnames";
 
 class NavbarSearch extends React.Component {
   constructor(props) {
@@ -33,8 +34,9 @@ class NavbarSearch extends React.Component {
   }
 
   render() {
+    let className = classnames(this.props.className, "main-navbar__search w-100 d-none d-md-flex d-lg-flex")
     return (
-      <Form className="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
+      <Form className={className}>
         <InputGroup seamless className="ml-3">
           <InputGroupAddon type="prepend">
             <InputGroupText>
@@ -57,11 +59,13 @@ NavbarSearch.propTypes = {
   /**
    * The defaultUrl
    */
-  defaultUrl: PropTypes.string
+  defaultUrl: PropTypes.string,
+  className: PropTypes.string
 }
 
 NavbarSearch.defaultProps = {
-  defaultUrl: ""
+  defaultUrl: "",
+  className: ""
 };
 
 export default NavbarSearch;
