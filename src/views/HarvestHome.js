@@ -3,7 +3,7 @@ import {Store} from "../flux";
 import {Col, Container, Navbar, NavLink, Row} from "shards-react";
 import PageTitle from "../components/common/PageTitle";
 import HarvestMain from "../components/harvest/HarvestMain";
-import {isUrl} from "../lib/utils";
+import {isUrl, splitUrlAndArgs} from "../lib/utils";
 import getHotLinks from "../data/hot-links";
 import NavbarSearch from "../components/layout/MainNavbar/NavbarSearch";
 import {HotLinkApi} from "../services";
@@ -57,12 +57,13 @@ class HarvestHome extends React.Component {
 
   render() {
     let params = new URLSearchParams(this.props.location.search);
-    let portalUrl = params.get("url")
+    let configuredUrl = (params.get("url") || "").trim()
+    configuredUrl = decodeURIComponent(atob(configuredUrl));
+    let {url, args} = splitUrlAndArgs(configuredUrl)
+    console.log(configuredUrl)
+    console.log(url + " " + args)
 
-    if (portalUrl && !isUrl(portalUrl)) {
-      portalUrl = decodeURIComponent(atob(portalUrl));
-    }
-
+    let portalUrl = url
     return (
       <Row>
         <Col className="p-0">
@@ -72,7 +73,7 @@ class HarvestHome extends React.Component {
               this.renderWelcome(this.state.message)
               :
               (
-                <HarvestMain portalUrl={portalUrl} />
+                <HarvestMain portalUrl={portalUrl} args={args} />
               )
           }
         </Col>

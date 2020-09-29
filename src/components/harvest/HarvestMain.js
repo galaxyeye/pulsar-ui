@@ -42,6 +42,7 @@ class HarvestMain extends React.Component {
 
     this.state = {
       portalUrl: this.props.portalUrl,
+      args: this.props.args,
       message: "加载中 ...",
       clientTemplate: clientTemplate,
       harvestTaskStatus: defaultHarvestStatus
@@ -57,14 +58,14 @@ class HarvestMain extends React.Component {
   }
 
   componentDidMount() {
-    this.submitTask(this.state.portalUrl)
+    this.submitTask(this.state.portalUrl, this.state.args)
   }
 
   componentWillUnmount() {
     this.clearRequestInterval()
   }
 
-  submitTask(portalUrl) {
+  submitTask(portalUrl: string, args: string) {
     let request = this.state.clientTemplate
     if (!isUrl(portalUrl)) {
       console.log('A valid url is required | <' + portalUrl + '>')
@@ -72,6 +73,7 @@ class HarvestMain extends React.Component {
     }
 
     request.portalUrl = portalUrl
+    request.args = args
     HarvestApi.query(request).then((taskId) => {
       console.log("Task id: " + taskId)
 
@@ -174,7 +176,7 @@ class HarvestMain extends React.Component {
     return (
       <Row>
         <Col className="p-0">
-          <MainNavbar defaultUrl={this.state.portalUrl} stickyTop={true} devtoolsSwitch={true}/>
+          <MainNavbar defaultUrl={this.state.portalUrl} args={this.state.args} stickyTop={true} devtoolsSwitch={true}/>
           {
             (statusCode !== 200)
               ? this.renderLoading(taskStatus, message)

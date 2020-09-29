@@ -9,7 +9,7 @@ import NavbarNav from "./NavbarNav/NavbarNav";
 
 {/* font: https://material.io/resources/icons/?icon=build&style=baseline*/ }
 
-const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
+const MainNavbar = ({ defaultUrl, args, layout, stickyTop, devtoolsSwitch }) => {
   const classes = classNames(
     "main-navbar",
     "bg-white",
@@ -24,7 +24,7 @@ const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
           <Link to={"/"} className="border-left border-right nav-link-icon d-sm-inline text-center nav-link">
             <i className="material-icons" title={'首页'}>home</i>
           </Link>
-          <NavbarSearch className={"main-navbar__search d-none"} defaultUrl={defaultUrl} />
+          <NavbarSearch className={"main-navbar__search d-none"} defaultUrl={defaultUrl} args={args} />
           <NavbarNav />
           <NavbarToggle />
         </Navbar>

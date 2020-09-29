@@ -17,6 +17,22 @@ export function isUrl(s: string) {
   return s && s.match(URL_REGEX)
 }
 
+/**
+ * @param s The possible url and args string
+ * @return object|null
+ * */
+export function splitUrlAndArgs(s: string) {
+  s = s.trim()
+  if (!s) return {url: null, args: null}
+
+  let pos = s.indexOf(" ")
+  let url = pos > "http://".length ? s.substring(0, pos) : s
+  if (!isUrl(url)) return {url: null, args: null}
+  let args = pos > 0 ? s.substring(1 + pos).trim() : null
+  if (args === "null") args = null
+  return {url: url, args: args}
+}
+
 export function formatTableCell(s: string) {
   if (isUrl(s)) {
     return <a href={s} target={"_blank"}>{s}</a>

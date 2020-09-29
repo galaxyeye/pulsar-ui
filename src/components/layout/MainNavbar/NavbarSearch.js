@@ -7,7 +7,7 @@ import {
   InputGroupText
 } from "shards-react";
 import PropTypes from "prop-types";
-import {isUrl} from "../../../lib/utils";
+import {isUrl, splitUrlAndArgs} from "../../../lib/utils";
 import * as classnames from "classnames";
 
 class NavbarSearch extends React.Component {
@@ -22,19 +22,21 @@ class NavbarSearch extends React.Component {
     if (event.key === 'Enter') {
       event.preventDefault()
 
-      let targetUrl = event.target.value.trim()
+      let input = event.target.value.trim()
+      if (!input) return
 
-      if (!isUrl(targetUrl)) {
-        return
-      }
+      let {url, args} = splitUrlAndArgs(input)
+      if (!url) return
 
       const base = this.appBase ? ("/" + this.appBase) : ""
-      window.location = base + "/ai?url=" + encodeURIComponent(btoa(targetUrl))
+      url = args ? url + " " + args : url
+      window.location = base + "/ai?url=" + encodeURIComponent(btoa(url))
     }
   }
 
   render() {
     let className = classnames(this.props.className, "w-100 d-md-flex d-lg-flex")
+    let {defaultUrl, args} = this.props
     return (
       <Form className={className}>
         <InputGroup seamless>
@@ -46,7 +48,7 @@ class NavbarSearch extends React.Component {
           <FormInput
             className="navbar-search"
             placeholder="输入一个列表页链接 ..."
-            defaultValue={this.props.defaultUrl}
+            defaultValue={args ? defaultUrl + " " + args : defaultUrl}
             onKeyDown={(e) => this.handleKeyDown(e)}
           />
         </InputGroup>
@@ -60,11 +62,13 @@ NavbarSearch.propTypes = {
    * The defaultUrl
    */
   defaultUrl: PropTypes.string,
+  args: PropTypes.string,
   className: PropTypes.string
 }
 
 NavbarSearch.defaultProps = {
   defaultUrl: "",
+  args: "",
   className: ""
 };
 
