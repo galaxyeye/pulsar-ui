@@ -13,7 +13,7 @@ class HarvestHome extends React.Component {
     super(props)
 
     this.state = {
-      message: "输入一个列表页链接 ...",
+      message: "你好啊，",
       hotLinks: getHotLinks(),
       devMode: Store.getDevMode()
     };
