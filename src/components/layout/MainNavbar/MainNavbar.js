@@ -24,7 +24,7 @@ const MainNavbar = ({ defaultUrl, layout, stickyTop, devtoolsSwitch }) => {
           <Link to={"/"} className="border-left border-right nav-link-icon d-sm-inline text-center nav-link">
             <i className="material-icons" title={'首页'}>home</i>
           </Link>
-          <NavbarSearch className={"main-navbar__search"} defaultUrl={defaultUrl} />
+          <NavbarSearch className={"main-navbar__search d-none"} defaultUrl={defaultUrl} />
           <NavbarNav />
           <NavbarToggle />
         </Navbar>
