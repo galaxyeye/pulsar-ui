@@ -1,6 +1,9 @@
 import type {TableType} from "./HarvestTaskStatusType";
 import React from "react";
 
+/**
+ * TODO: can not recognize unicode in url
+ * */
 export const URL_REGEX = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/;
 
 export function formatPercentage(num) {

@@ -1,5 +1,5 @@
 import React from "react";
-import {Store} from "../../flux";
+import {Constants, Dispatcher, Store} from "../../flux";
 import {Col, Container, Row} from "shards-react";
 import HarvestResult from "../../components/harvest/HarvestResult";
 import HarvestDevtools from "../../components/harvest/HarvestDevtools";
@@ -43,6 +43,7 @@ class HarvestMain extends React.Component {
     this.state = {
       portalUrl: this.props.portalUrl,
       args: this.props.args,
+      mode: this.props.mode,
       message: "加载中 ...",
       clientTemplate: clientTemplate,
       harvestTaskStatus: defaultHarvestStatus
@@ -51,10 +52,15 @@ class HarvestMain extends React.Component {
     this.timer = null;
     this.tick = 0;
 
+    if (this.state.mode === "dev") {
+      this.triggerDevtools()
+    }
+
     this.submitTask = this.submitTask.bind(this);
     this.getHarvestTaskStatus = this.getHarvestTaskStatus.bind(this);
     this.clearRequestInterval = this.clearRequestInterval.bind(this);
     this.getTables = this.getTables.bind(this);
+    this.triggerDevtools = this.triggerDevtools.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +69,13 @@ class HarvestMain extends React.Component {
 
   componentWillUnmount() {
     this.clearRequestInterval()
+  }
+
+  triggerDevtools() {
+    Dispatcher.dispatch({
+      actionType: Constants.TOGGLE_DEVTOOLS
+    });
+    this.setState({...this.state, devMode: Store.getDevMode() } )
   }
 
   submitTask(portalUrl: string, args: string) {

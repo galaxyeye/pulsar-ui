@@ -58,10 +58,9 @@ class HarvestHome extends React.Component {
   render() {
     let params = new URLSearchParams(this.props.location.search);
     let configuredUrl = (params.get("url") || "").trim()
+    let mode = (params.get("mode") || "").trim()
     configuredUrl = decodeURIComponent(atob(configuredUrl));
     let {url, args} = splitUrlAndArgs(configuredUrl)
-    console.log(configuredUrl)
-    console.log(url + " " + args)
 
     let portalUrl = url
     return (
@@ -73,7 +72,7 @@ class HarvestHome extends React.Component {
               this.renderWelcome(this.state.message)
               :
               (
-                <HarvestMain portalUrl={portalUrl} args={args} />
+                <HarvestMain portalUrl={portalUrl} args={args} mode={mode} />
               )
           }
         </Col>
