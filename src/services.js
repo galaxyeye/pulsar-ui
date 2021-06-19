@@ -12,6 +12,11 @@ export const W3DocApi = {
   query: POST("/api/w3doc/query")
 };
 
+export const ScrapeApi = {
+  query: POST("/api/x/a/q"),
+  status: GET("/api/x/a/status")
+};
+
 export const HarvestApi = {
   list: GET("/api/xx"),
   create: POST("/api/xx"),

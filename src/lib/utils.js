@@ -41,3 +41,22 @@ export function formatTableCell(s: string) {
     return <a href={s} target={"_blank"}>{s}</a>
   } else return s
 }
+
+export function adjustInterval(tick: number, timer: number) {
+  if (tick > 180) {
+    clearInterval(timer)
+    return false
+  } else if (tick > 120 && tick % 20 === 0) {
+    return false
+  } else if (tick > 60 && tick % 10 === 0) {
+    return false
+  } else if (tick > 30 && tick % 5 === 0) {
+    return false
+  } else if (tick > 20 && tick % 3 === 0) {
+    return false
+  } else if (tick % 2 === 0) {
+    return false
+  }
+
+  return true
+}

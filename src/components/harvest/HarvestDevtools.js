@@ -86,7 +86,9 @@ class HarvestDevtools extends React.Component {
                 网页区域
               </ListGroupItem>
               {tables.map((table, tableIndex) => (
-                <ListGroupItem key={tableIndex} onClick={() => this.onChooseTable(tableIndex)} active={this.state.tableIndex === tableIndex}>
+                <ListGroupItem key={tableIndex}
+                               onClick={() => this.onChooseTable(tableIndex)}
+                               active={this.state.tableIndex === tableIndex}>
                   {table.tableData.name}
                 </ListGroupItem>))}
             </ListGroup>
@@ -94,33 +96,39 @@ class HarvestDevtools extends React.Component {
 
           <Col className={"col-lg-10 vh-100 w-100"}>
             <Collapse open={this.state.tablePanel.active}>
-              <Row className={"h-50"} >
+              <Row className={"h-50"}>
                 <PageTableCard table={table} tableIndex={tableIndex}/>
               </Row>
             </Collapse>
 
             <Row>
               <Container fluid>
-                <Button outline theme={"primary"} className="mr-2" data-ref={"#tablePanel"} onClick={this.toggleTablePanel}>
+                <Button outline theme={"primary"} className="mr-2"
+                        data-ref={"#tablePanel"}
+                        onClick={this.toggleTablePanel}>
                   <i className={"material-icons"}>table</i>
                   表格
                 </Button>
 
                 <ButtonGroup>
-                  <Button outline onClick={(e) => this.togglePanel(e, this.panelGroup.xsqlPanel)}>
+                  <Button outline
+                          onClick={(e) => this.togglePanel(e, this.panelGroup.xsqlPanel)}>
                     <i className={"material-icons"}>code</i>
                     SQL
                   </Button>
 
-                  <Button outline onClick={(e) => this.togglePanel(e, this.panelGroup.cssPanel)}>
+                  <Button outline
+                          onClick={(e) => this.togglePanel(e, this.panelGroup.cssPanel)}>
                     <i className={"material-icons"}>color_lens</i>
                     列分析
                   </Button>
-                  <Button outline onClick={(e) => this.togglePanel(e, this.panelGroup.fragmentPanel)}>
+                  <Button outline
+                          onClick={(e) => this.togglePanel(e, this.panelGroup.fragmentPanel)}>
                     <i className={"material-icons"}>preview</i>
                     数据预览
                   </Button>
-                  <Button outline onClick={(e) => this.togglePanel(e, this.panelGroup.browserPanel)}>
+                  <Button outline
+                          onClick={(e) => this.togglePanel(e, this.panelGroup.browserPanel)}>
                     <i className={"material-icons"}>pageview</i>
                     浏览器
                   </Button>
@@ -129,17 +137,22 @@ class HarvestDevtools extends React.Component {
             </Row>
 
             <Row className={"h-50"}>
-              <Collapse open={this.state.activePanel === this.panelGroup.xsqlPanel}>
-                <XSQLCard table={table} tableIndex={tableIndex} />
+              <Collapse
+                open={this.state.activePanel === this.panelGroup.xsqlPanel}>
+                <XSQLCard table={table} tableIndex={tableIndex}/>
               </Collapse>
-              <Collapse open={this.state.activePanel === this.panelGroup.cssPanel}>
-                <ColumnInfoCard table={table} tableIndex={tableIndex} />
+              <Collapse
+                open={this.state.activePanel === this.panelGroup.cssPanel}>
+                <ColumnInfoCard table={table} tableIndex={tableIndex}/>
               </Collapse>
-              <Collapse open={this.state.activePanel === this.panelGroup.fragmentPanel}>
-                <FragmentCard targetUrl={portalUrl} table={table} tableIndex={tableIndex} activeRowIndex={0} />
+              <Collapse
+                open={this.state.activePanel === this.panelGroup.fragmentPanel}>
+                <FragmentCard targetUrl={portalUrl} table={table}
+                              tableIndex={tableIndex} activeRowIndex={0}/>
               </Collapse>
 
-              {this.state.activePanel === this.panelGroup.browserPanel ? <BrowserCard url={portalUrl} /> : <div/>}
+              {this.state.activePanel === this.panelGroup.browserPanel ?
+                <BrowserCard url={portalUrl}/> : <div/>}
             </Row>
           </Col>
         </Row>

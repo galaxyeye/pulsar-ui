@@ -1,10 +1,10 @@
 export default function () {
   return {
     auth: {
-      username: "gJn6fUBh",
-      authToken: "af1639a924d7232099a037e9544cf43f",
+      username: "OSm4fXer",
+      authToken: "1a7369f0b51b89e1ca917ff9b7ca0f82",
       version: "1",
-      userToken: "gJn6fUBh-1-af1639a924d7232099a037e9544cf43f"
+      userToken: "OSm4fXer-1-1a7369f0b51b89e1ca917ff9b7ca0f82"
     },
     apiServer: {
       product: "http://api.platonic.fun",

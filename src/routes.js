@@ -12,6 +12,7 @@ import Tables from "./views/Tables";
 import BlogPosts from "./views/BlogPosts";
 import HarvestHome from "./views/HarvestHome";
 import HarvestLayout from "./layouts/Harvest";
+import HarvestTest from "./views/HarvestTest";
 
 export default [
   {
@@ -24,6 +25,11 @@ export default [
     path: "/ai",
     layout: HarvestLayout,
     component: HarvestHome
+  },
+  {
+    path: "/test",
+    layout: HarvestLayout,
+    component: HarvestTest
   },
   {
     path: "/errors",

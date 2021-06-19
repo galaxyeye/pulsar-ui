@@ -7,7 +7,7 @@ import {HarvestApi} from "../../services";
 import PageTitle from "../../components/common/PageTitle";
 import type {HarvestTaskStatusType} from "../../lib/HarvestTaskStatusType";
 import {RingLoader} from "react-spinners";
-import {formatPercentage, isUrl} from "../../lib/utils"
+import {adjustInterval, formatPercentage, isUrl} from "../../lib/utils"
 import PropTypes from "prop-types";
 import {getRestApiBaseURI} from "../../lib/api";
 import MainNavbar from "../layout/MainNavbar/MainNavbar";
@@ -16,7 +16,7 @@ let auth = Store.getAuth()
 const clientTemplate = {
   username: auth.username,
   authToken: auth.authToken,
-  args: "-i 365d -ii 365d -diagnose -vj",
+  args: "-diagnose -vj",
   apiEntry: getRestApiBaseURI() + "/api"
 }
 
@@ -53,7 +53,9 @@ class HarvestMain extends React.Component {
     this.tick = 0;
 
     if (this.state.mode === "dev") {
-      this.triggerDevtools()
+      Dispatcher.dispatch({
+        actionType: Constants.TOGGLE_DEVTOOLS
+      });
     }
 
     this.submitTask = this.submitTask.bind(this);
@@ -101,7 +103,7 @@ class HarvestMain extends React.Component {
     let request = getTaskStatusRequest(id)
     let portalUrl = this.state.portalUrl
     this.timer = setInterval(() => {
-      if (!this.adjustInterval(++this.tick, this.timer)) {
+      if (!adjustInterval(++this.tick, this.timer)) {
         return
       }
 
@@ -117,7 +119,7 @@ class HarvestMain extends React.Component {
           harvestTaskStatus: taskStatus
         })
 
-        if (taskStatus.statusCode === 200) {
+        if (taskStatus.statusCode === 200 || taskStatus.isDone) {
           this.clearRequestInterval()
         }
       }).catch(function (ex) {
@@ -133,25 +135,6 @@ class HarvestMain extends React.Component {
     } else {
       return []
     }
-  }
-
-  adjustInterval(tick: number, timer: number) {
-    if (tick > 180) {
-      clearInterval(timer)
-      return false
-    } else if (tick > 120 && tick % 20 === 0) {
-      return false
-    } else if (tick > 60 && tick % 10 === 0) {
-      return false
-    } else if (tick > 30 && tick % 5 === 0) {
-      return false
-    } else if (tick > 20 && tick % 3 === 0) {
-      return false
-    } else if (tick % 2 === 0) {
-      return false
-    }
-
-    return true
   }
 
   clearRequestInterval() {

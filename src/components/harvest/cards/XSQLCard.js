@@ -1,15 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Button, Card, CardBody, Container, FormGroup} from "shards-react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Collapse,
+  Container,
+  FormGroup
+} from "shards-react";
 import {UnControlled as CodeMirror} from "react-codemirror2";
 import {defaultCardBodyClassName, defaultCardClassName} from "./common";
+import ScrapeMain from "../ScrapeMain";
 
 class XSQLCard extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      active: false
+      sql: this.props.table.tableData.xsql,
     };
     this.editor = null
     this.timer = null
@@ -17,10 +26,12 @@ class XSQLCard extends React.Component {
 
   componentDidMount() {
     let card = this
-    this.timer = setInterval(function() {
+    this.timer = setInterval(function () {
       if (card.editor != null) {
         card.editor.refresh();
-        if (document.querySelector(".harvest-status__x-sql").textContent.indexOf("select") > 0) {
+        let sql = card.editor.sql
+        if (sql && sql.indexOf("select") > 0) {
+          card.setState({...card.state, sql: sql})
           clearInterval(card.timer)
         }
       }
@@ -57,10 +68,10 @@ class XSQLCard extends React.Component {
                 }}
               />
             </FormGroup>
-            <Button theme="white" type="submit">
-              执行
-            </Button>
           </CardBody>
+        </Card>
+        <Card className={defaultCardClassName()}>
+          <ScrapeMain sqlCard={card} />
         </Card>
       </Container>)
   }
@@ -70,11 +81,11 @@ XSQLCard.propTypes = {
   /**
    * The url of the sample page.
    */
-  url: PropTypes.string
+  sql: PropTypes.string
 };
 
 XSQLCard.defaultProps = {
-  url: ""
+  sql: ""
 };
 
 export default XSQLCard;
