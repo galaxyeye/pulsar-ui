@@ -11,27 +11,29 @@ import {
 } from "shards-react";
 import {UnControlled as CodeMirror} from "react-codemirror2";
 import {defaultCardBodyClassName, defaultCardClassName} from "./common";
-import ScrapeMain from "../ScrapeMain";
+import ScrapePanel from "../ScrapePanel";
 
 class XSQLCard extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      sql: this.props.table.tableData.xsql,
+      table: this.props.table,
+      tableIndex: this.props.tableIndex
     };
     this.editor = null
+    this.scrapePanel = null
     this.timer = null
   }
 
   componentDidMount() {
     let card = this
+    // fix editor bug
     this.timer = setInterval(function () {
       if (card.editor != null) {
         card.editor.refresh();
-        let sql = card.editor.sql
+        let sql = card.editor.value
         if (sql && sql.indexOf("select") > 0) {
-          card.setState({...card.state, sql: sql})
           clearInterval(card.timer)
         }
       }
@@ -59,19 +61,28 @@ class XSQLCard extends React.Component {
                   fullScreen: false,
                 }}
                 editorDidMount={(editor) => {
-                  console.log("mount")
                   card.editor = editor
                 }}
                 onBlur={(editor, data, value) => {
                 }}
                 onChange={(editor, data, value) => {
+                  let panel = card.scrapePanel
+                  if (panel != null) {
+                    panel.setState({...panel.state, sql: value})
+                  }
                 }}
               />
             </FormGroup>
           </CardBody>
         </Card>
         <Card className={defaultCardClassName()}>
-          <ScrapeMain sqlCard={card} />
+          <ScrapePanel
+            sql = {this.props.table.tableData.xsql}
+            didMount = {(panel) => {
+              this.scrapePanel = panel
+              panel.scrape()
+            }}
+          />
         </Card>
       </Container>)
   }
@@ -81,11 +92,11 @@ XSQLCard.propTypes = {
   /**
    * The url of the sample page.
    */
-  sql: PropTypes.string
+  table: PropTypes.object
 };
 
 XSQLCard.defaultProps = {
-  sql: ""
+  table: {}
 };
 
 export default XSQLCard;

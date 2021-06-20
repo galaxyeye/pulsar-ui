@@ -140,6 +140,7 @@ class HarvestMain extends React.Component {
   clearRequestInterval() {
     this.tick = 0
     clearInterval(this.timer)
+    this.timer = null
   }
 
   buildMessage(tick: number, portalUrl: string, taskStatus: HarvestTaskStatusType) {

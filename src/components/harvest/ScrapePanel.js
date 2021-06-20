@@ -23,34 +23,32 @@ function getTaskStatusRequest(taskId) {
   }
 }
 
-class ScrapeMain extends React.Component {
+class ScrapePanel extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      sqlCard: this.props.sqlCard
-    };
+      sql: this.props.sql,
+      scrapeResponse: null
+    }
 
-    this.timer = null;
-    this.tick = 0;
+    this.timer = null
+    this.tick = 0
 
-    this.scrape = this.scrape.bind(this);
-    this.getSQL = this.getSQL.bind(this);
+    this.scrape = this.scrape.bind(this)
+    this.clearScrapeStatusTimer = this.clearScrapeStatusTimer.bind(this)
   }
 
   componentDidMount() {
-    this.scrape(this.getSQL())
+    this.props.didMount(this)
   }
 
   componentWillUnmount() {
-    this.clearRequestInterval()
+    this.clearScrapeStatusTimer()
   }
 
-  getSQL() {
-    return this.state.sqlCard.state.sql
-  }
-
-  scrape(sql: string) {
+  scrape() {
+    let sql = this.state.sql
     if (!sql) {
       return
     }
@@ -58,7 +56,8 @@ class ScrapeMain extends React.Component {
     let auth = Store.getAuth()
     let request = {authToken: auth.userToken, sql: sql}
     ScrapeApi.query(request).then((taskId) => {
-      this.setState({...this.state, taskId: taskId})
+      this.clearScrapeStatusTimer()
+      this.setState({...this.state, taskId: taskId, scrapeResponse: null})
       this.getStatus(taskId)
     }).catch(function (ex) {
       console.log('Response parsing failed. Error: ', ex)
@@ -66,6 +65,7 @@ class ScrapeMain extends React.Component {
   }
 
   getStatus(taskId) {
+    let panel = this
     let request = getTaskStatusRequest(taskId)
     this.timer = setInterval(() => {
       if (!adjustInterval(++this.tick, this.timer)) {
@@ -76,23 +76,21 @@ class ScrapeMain extends React.Component {
         let msg = JSON.stringify({isDone: response.isDone, status: response.status, pageStatus: response.pageStatus})
         console.log(msg)
 
-        this.setState({
-          ...this.state,
-          scrapeResponse: response
-        })
+        this.setState({...this.state, scrapeResponse: response})
 
         if (response.statusCode === 200 || response.isDone) {
-          this.clearRequestInterval()
+          this.clearScrapeStatusTimer()
         }
       }).catch(function (ex) {
         console.log('Response parsing failed. Error: ', ex);
       });
-    }, 1500)
+    }, 2000)
   }
 
-  clearRequestInterval() {
+  clearScrapeStatusTimer() {
     this.tick = 0
     clearInterval(this.timer)
+    this.timer = null
   }
 
   render() {
@@ -101,20 +99,17 @@ class ScrapeMain extends React.Component {
         <CardHeader className="border-bottom">
           <Button theme="white" type="button"
                   onClick={() => {
-                    let sql = this.getSQL()
-                    if (sql) {
-                      this.scrape(this.getSQL())
-                    }
+                    this.scrape()
                   }}
           >
             执行
           </Button>
         </CardHeader>
 
-        <Collapse open={!!this.getSQL()}>
+        <Collapse open={!!this.state.scrapeResponse}>
           <CardBody>
             {
-              this.getSQL() ?
+              this.state.scrapeResponse ?
                 <ReactJson src={this.state.scrapeResponse}
                            displayObjectSize={false}
                            displayDataTypes={false}
@@ -127,11 +122,11 @@ class ScrapeMain extends React.Component {
   }
 }
 
-ScrapeMain.propTypes = {
+ScrapePanel.propTypes = {
   /**
    * The sql.
    */
   sql: PropTypes.string,
 };
 
-export default ScrapeMain;
+export default ScrapePanel;

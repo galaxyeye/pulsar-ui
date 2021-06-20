@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Popover, PopoverBody, PopoverHeader } from "shards-react";
 import JsonViewCard from "../components/harvest/cards/JsonViewCard";
-import ScrapeMain from "../components/harvest/ScrapeMain";
+import ScrapePanel from "../components/harvest/ScrapePanel";
 
 let sql = " select\n" +
   "      dom_base_uri(dom) as url,\n" +
@@ -41,7 +41,7 @@ class HarvestTest extends React.Component {
   render() {
     return (
       <div>
-        <ScrapeMain sql={sql}/>
+        <ScrapePanel sql={sql}/>
         <Button id="popover-1" onClick={this.toggle}>
           Toggle
         </Button>
