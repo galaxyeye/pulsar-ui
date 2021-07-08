@@ -1,9 +1,9 @@
 import React from "react";
 import {Constants, Dispatcher, Store} from "../../flux";
-import {Col, Container, Row} from "shards-react";
+import {Col, Container, Navbar, NavLink, Row} from "shards-react";
 import HarvestResult from "../../components/harvest/HarvestResult";
 import HarvestDevtools from "../../components/harvest/HarvestDevtools";
-import {HarvestApi} from "../../services";
+import {HarvestApi, HotLinkApi} from "../../services";
 import PageTitle from "../../components/common/PageTitle";
 import type {HarvestTaskStatusType} from "../../lib/HarvestTaskStatusType";
 import {RingLoader} from "react-spinners";
@@ -11,6 +11,8 @@ import {adjustInterval, formatPercentage, isUrl} from "../../lib/utils"
 import PropTypes from "prop-types";
 import {getRestApiBaseURI} from "../../lib/api";
 import MainNavbar from "../layout/MainNavbar/MainNavbar";
+import getHotLinks from "../../data/hot-links";
+import NavbarSearch from "../layout/MainNavbar/NavbarSearch";
 
 let auth = Store.getAuth()
 const clientTemplate = {
@@ -46,7 +48,8 @@ class HarvestMain extends React.Component {
       mode: this.props.mode,
       message: "加载中 ...",
       clientTemplate: clientTemplate,
-      harvestTaskStatus: defaultHarvestStatus
+      harvestTaskStatus: defaultHarvestStatus,
+      hotLinks: getHotLinks(),
     };
 
     this.timer = null;
@@ -63,6 +66,8 @@ class HarvestMain extends React.Component {
     this.clearRequestInterval = this.clearRequestInterval.bind(this);
     this.getTables = this.getTables.bind(this);
     this.triggerDevtools = this.triggerDevtools.bind(this);
+    this.getHotLinks = this.getHotLinks.bind(this);
+    this.getHarvestUrl = this.getHarvestUrl.bind(this);
   }
 
   componentDidMount() {
@@ -78,6 +83,20 @@ class HarvestMain extends React.Component {
       actionType: Constants.TOGGLE_DEVTOOLS
     });
     this.setState({...this.state, devMode: Store.getDevMode() } )
+  }
+
+  getHarvestUrl(targetUrl) {
+    return "ai?url=" + encodeURIComponent(btoa(targetUrl))
+  }
+
+  getHotLinks() {
+    HotLinkApi.get().then((hotLinks) => {
+      if (hotLinks && hotLinks.length > 0) {
+        this.setState({...this.state, hotLinks: hotLinks})
+      }
+    }).catch(function (ex) {
+      console.log('Response parsing failed. Error: ', ex);
+    });
   }
 
   submitTask(portalUrl: string, args: string) {
@@ -169,11 +188,23 @@ class HarvestMain extends React.Component {
     let statusCode = taskStatus.statusCode
     let message = this.state.message
     let tables = this.getTables()
+    const hotLinks = this.state.hotLinks
 
     return (
       <Row>
         <Col className="p-0">
           <MainNavbar defaultUrl={this.state.portalUrl} args={this.state.args} stickyTop={true} devtoolsSwitch={true}/>
+
+          <Row className="align-items-center">
+            <Col className="mx-auto col-md-8 col-sm-auto">
+              <Navbar type="light" className="mx-auto mt-3 align-items-stretch flex-md-nowrap p-0">
+                {hotLinks.map((link, i) => (
+                  <NavLink key={i} href={this.getHarvestUrl(link.href)}>{link.text}</NavLink>
+                ))}
+              </Navbar>
+            </Col>
+          </Row>
+
           {
             (statusCode !== 200)
               ? this.renderLoading(taskStatus, message)
