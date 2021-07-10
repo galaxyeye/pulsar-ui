@@ -203,7 +203,7 @@ class HarvestMain extends React.Component {
                       className="mx-auto mt-3 align-items-stretch flex-md-nowrap p-0">
                 {hotLinks.map((link, i) => (
                   <NavLink key={i}
-                           href={getHarvestUrl(this.state.devMode, link.href)}>{link.text}</NavLink>
+                           href={getHarvestUrl(devMode, link.href)}>{link.text}</NavLink>
                 ))}
               </Navbar>
             </Col>
