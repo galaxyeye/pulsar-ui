@@ -3,7 +3,7 @@ import {Store} from "../flux";
 import {Col, Container, Navbar, NavLink, Row} from "shards-react";
 import PageTitle from "../components/common/PageTitle";
 import HarvestMain from "../components/harvest/HarvestMain";
-import {isUrl, splitUrlAndArgs} from "../lib/utils";
+import {getHarvestUrl, isUrl, splitUrlAndArgs} from "../lib/utils";
 import getHotLinks from "../data/hot-links";
 import NavbarSearch from "../components/layout/MainNavbar/NavbarSearch";
 import {HotLinkApi} from "../services";
@@ -21,7 +21,6 @@ class HarvestHome extends React.Component {
     this.appBase = process.env.REACT_APP_BASENAME || ""
     this.onDevModeChange = this.onDevModeChange.bind(this);
     this.getHotLinks = this.getHotLinks.bind(this);
-    this.getHarvestUrl = this.getHarvestUrl.bind(this);
   }
 
   componentDidMount() {
@@ -51,14 +50,11 @@ class HarvestHome extends React.Component {
     });
   }
 
-  getHarvestUrl(targetUrl) {
-    return "ai?url=" + encodeURIComponent(btoa(targetUrl))
-  }
-
   render() {
     let params = new URLSearchParams(this.props.location.search);
     let configuredUrl = (params.get("url") || "").trim()
     let mode = (params.get("mode") || "").trim()
+    this.state.mode = mode
     configuredUrl = decodeURIComponent(atob(configuredUrl));
     let {url, args} = splitUrlAndArgs(configuredUrl)
 
@@ -94,7 +90,7 @@ class HarvestHome extends React.Component {
             <div className="jumbotron mt-0">
               <Navbar type="light" className="mx-auto mt-3 align-items-stretch flex-md-nowrap p-0">
                 {hotLinks.map((link, i) => (
-                  <NavLink key={i} href={this.getHarvestUrl(link.href)}>{link.text}</NavLink>
+                  <NavLink key={i} href={getHarvestUrl(this.state.mode, link.href)}>{link.text}</NavLink>
                 ))}
               </Navbar>
             </div>

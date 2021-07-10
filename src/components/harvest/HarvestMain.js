@@ -7,12 +7,16 @@ import {HarvestApi, HotLinkApi} from "../../services";
 import PageTitle from "../../components/common/PageTitle";
 import type {HarvestTaskStatusType} from "../../lib/HarvestTaskStatusType";
 import {RingLoader} from "react-spinners";
-import {adjustInterval, formatPercentage, isUrl} from "../../lib/utils"
+import {
+  adjustInterval,
+  formatPercentage,
+  getHarvestUrl,
+  isUrl
+} from "../../lib/utils"
 import PropTypes from "prop-types";
 import {getRestApiBaseURI} from "../../lib/api";
 import MainNavbar from "../layout/MainNavbar/MainNavbar";
 import getHotLinks from "../../data/hot-links";
-import NavbarSearch from "../layout/MainNavbar/NavbarSearch";
 
 let auth = Store.getAuth()
 const clientTemplate = {
@@ -67,7 +71,6 @@ class HarvestMain extends React.Component {
     this.getTables = this.getTables.bind(this);
     this.triggerDevtools = this.triggerDevtools.bind(this);
     this.getHotLinks = this.getHotLinks.bind(this);
-    this.getHarvestUrl = this.getHarvestUrl.bind(this);
   }
 
   componentDidMount() {
@@ -82,11 +85,7 @@ class HarvestMain extends React.Component {
     Dispatcher.dispatch({
       actionType: Constants.TOGGLE_DEVTOOLS
     });
-    this.setState({...this.state, devMode: Store.getDevMode() } )
-  }
-
-  getHarvestUrl(targetUrl) {
-    return "ai?url=" + encodeURIComponent(btoa(targetUrl))
+    this.setState({...this.state, devMode: Store.getDevMode()})
   }
 
   getHotLinks() {
@@ -172,7 +171,9 @@ class HarvestMain extends React.Component {
     } else if (statusCode === 404) {
       message = "加载中 ..."
     } else if (statusCode === 201) {
-      message = "分析中 ..."
+      message = "准备分析 ..."
+    } else if (statusCode >= 100 && statusCode < 200) {
+      message = "正在分析 ..."
     }
 
     if (tick > 180) {
@@ -193,13 +194,16 @@ class HarvestMain extends React.Component {
     return (
       <Row>
         <Col className="p-0">
-          <MainNavbar defaultUrl={this.state.portalUrl} args={this.state.args} stickyTop={true} devtoolsSwitch={true}/>
+          <MainNavbar defaultUrl={this.state.portalUrl} args={this.state.args}
+                      stickyTop={true} devtoolsSwitch={true}/>
 
           <Row className="align-items-center">
             <Col className="mx-auto col-md-8 col-sm-auto">
-              <Navbar type="light" className="mx-auto mt-3 align-items-stretch flex-md-nowrap p-0">
+              <Navbar type="light"
+                      className="mx-auto mt-3 align-items-stretch flex-md-nowrap p-0">
                 {hotLinks.map((link, i) => (
-                  <NavLink key={i} href={this.getHarvestUrl(link.href)}>{link.text}</NavLink>
+                  <NavLink key={i}
+                           href={getHarvestUrl(this.state.mode, link.href)}>{link.text}</NavLink>
                 ))}
               </Navbar>
             </Col>
@@ -235,7 +239,8 @@ class HarvestMain extends React.Component {
     return (
       <Container fluid>
         <Row noGutters className="page-header py-4">
-          <PageTitle title="柏拉图 AI 浏览器" subtitle={message} className="text-sm-left mb-3 ml-3"/>
+          <PageTitle title="柏拉图 AI 浏览器" subtitle={message}
+                     className="text-sm-left mb-3 ml-3"/>
         </Row>
 
         <Row className="page-loading align-items-center h-100">

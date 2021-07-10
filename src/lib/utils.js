@@ -60,3 +60,11 @@ export function adjustInterval(tick: number, timer: number) {
 
   return true
 }
+
+export function getHarvestUrl(mode, targetUrl) {
+  let url = "ai?"
+  if (mode === "dev") {
+    url += "mode=dev"
+  }
+  return url + "&url=" + encodeURIComponent(btoa(targetUrl))
+}
