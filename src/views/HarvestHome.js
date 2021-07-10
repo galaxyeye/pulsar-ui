@@ -53,8 +53,7 @@ class HarvestHome extends React.Component {
   render() {
     let params = new URLSearchParams(this.props.location.search);
     let configuredUrl = (params.get("url") || "").trim()
-    let mode = (params.get("mode") || "").trim()
-    this.state.mode = mode
+    let urlMode = (params.get("mode") || "").trim()
     configuredUrl = decodeURIComponent(atob(configuredUrl));
     let {url, args} = splitUrlAndArgs(configuredUrl)
 
@@ -68,7 +67,7 @@ class HarvestHome extends React.Component {
               this.renderWelcome(this.state.message)
               :
               (
-                <HarvestMain portalUrl={portalUrl} args={args} mode={mode} />
+                <HarvestMain portalUrl={portalUrl} args={args} devMode={urlMode} />
               )
           }
         </Col>
@@ -90,7 +89,7 @@ class HarvestHome extends React.Component {
             <div className="jumbotron mt-0">
               <Navbar type="light" className="mx-auto mt-3 align-items-stretch flex-md-nowrap p-0">
                 {hotLinks.map((link, i) => (
-                  <NavLink key={i} href={getHarvestUrl(this.state.mode, link.href)}>{link.text}</NavLink>
+                  <NavLink key={i} href={getHarvestUrl(this.state.devMode, link.href)}>{link.text}</NavLink>
                 ))}
               </Navbar>
             </div>
