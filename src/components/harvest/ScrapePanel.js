@@ -19,7 +19,7 @@ let auth = Store.getAuth()
 function getTaskStatusRequest(taskId) {
   return {
     "authToken": auth.userToken,
-    "uuid": taskId
+    "id": taskId
   }
 }
 

@@ -1,7 +1,7 @@
 export default function () {
   return {
     "statusCode": 200,
-    "uuid": "7c0cdcdb-017e-4cd2-9a8f-1b5fe02e1f5d",
+    "id": "7c0cdcdb-017e-4cd2-9a8f-1b5fe02e1f5d",
     "result": {
       "portalUrl": "https://www.amazon.com/Best-Sellers-Automotive/zgbs/automotive/ref=zg_bs_nav_0",
       "args": "-cellType PLAIN_TEXT -verboseJson -diagnose -expires PT8760H -outlinkSelector a[href~=/dp/] -itemExpires PT8760H",

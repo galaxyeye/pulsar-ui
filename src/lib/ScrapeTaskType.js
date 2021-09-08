@@ -9,7 +9,7 @@ export type ScrapeResponseType = {
   isDone: boolean,
   statusCode: number,
   status: string,
-  uuid: string,
+  id: string,
   result: ScrapeResultSetType,
   ntotalPages: number,
   nsuccessPages: number
