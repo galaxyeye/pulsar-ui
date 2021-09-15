@@ -16,7 +16,7 @@ class PageTableCard extends React.Component {
           <CardBody className={"p-3"}>
             <div>
               <i className="no">{tableIndex + 1}.</i>发现 <em>{table.numColumns}</em> 个字段，区域
-              <b> {table.tableData.name}</b>
+              <b> {table.tableData.name}</b>，<span>SQL已自动生成</span>
             </div>
             <div className="scroll-x table-container">
               <FlatTable table={table} tableIndex={tableIndex}/>
