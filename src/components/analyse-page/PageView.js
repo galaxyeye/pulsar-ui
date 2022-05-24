@@ -51,7 +51,7 @@ PageView.defaultProps = {
     id: 1,
     date: "3 days ago",
     author: {
-      image: require("../../images/avatars/1.jpg"),
+      image: require("../../assets/images/avatars/1.jpg"),
       name: "John Doe",
       url: "#"
     },

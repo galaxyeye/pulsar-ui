@@ -100,7 +100,7 @@ Discussions.defaultProps = {
       id: 1,
       date: "3 days ago",
       author: {
-        image: require("../../images/avatars/1.jpg"),
+        image: require("../../assets/images/avatars/1.jpg"),
         name: "John Doe",
         url: "#"
       },
@@ -114,7 +114,7 @@ Discussions.defaultProps = {
       id: 2,
       date: "4 days ago",
       author: {
-        image: require("../../images/avatars/2.jpg"),
+        image: require("../../assets/images/avatars/2.jpg"),
         name: "John Doe",
         url: "#"
       },
@@ -128,7 +128,7 @@ Discussions.defaultProps = {
       id: 3,
       date: "5 days ago",
       author: {
-        image: require("../../images/avatars/3.jpg"),
+        image: require("../../assets/images/avatars/3.jpg"),
         name: "John Doe",
         url: "#"
       },
