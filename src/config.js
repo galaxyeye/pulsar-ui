@@ -7,8 +7,8 @@ export default function () {
       userToken: "OSm4fXer-1-1a7369f0b51b89e1ca917ff9b7ca0f82"
     },
     apiServer: {
-      product: "http://platonic.fun:8182",
-      dev: "http://localhost:8182"
+      product: "http://platonic.fun:8182/api",
+      dev: "http://localhost:2718/exotic"
     }
   }
 }

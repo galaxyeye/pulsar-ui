@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import GoogleAnalytics from "react-ga";
+import GoogleAnalytics from "react-ga4";
 
-GoogleAnalytics.initialize(process.env.REACT_APP_GAID || "UA-115105611-2");
+// see https://github.com/PriceRunner/react-ga4#readme
+GoogleAnalytics.initialize(process.env.REACT_APP_GAID || "G-WVR0BFHCVV");
 
 const withTracker = (WrappedComponent, options = {}) => {
   const trackPage = page => {
@@ -13,7 +14,7 @@ const withTracker = (WrappedComponent, options = {}) => {
       page,
       ...options
     });
-    GoogleAnalytics.pageview(page);
+    GoogleAnalytics.send(page);
   };
 
   const BASENAME = process.env.REACT_APP_BASENAME || "";
