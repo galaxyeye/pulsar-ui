@@ -8,7 +8,7 @@ export default function () {
     },
     apiServer: {
       product: "http://platonic.fun:8182/api",
-      dev: "http://localhost:2718/exotic"
+      dev: "http://localhost:8182/api"
     }
   }
 }

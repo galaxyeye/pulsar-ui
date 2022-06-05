@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import HtmlContent from "../../analyse-page/HtmlContent";
+import HtmlContent from "../HtmlContent";
 import {Store} from "../../../flux";
 import {W3DocApi} from "../../../services";
 import {findSampleUrlFromTable} from "../../../lib/utils";

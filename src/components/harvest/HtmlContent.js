@@ -139,7 +139,7 @@ class HtmlContent extends React.Component {
           </CardBody>
         </Card>
       </Container>
-      )
+    )
   }
 }
 
