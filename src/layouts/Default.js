@@ -7,7 +7,6 @@ import MainSidebar from "../components/layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/layout/MainFooter";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../assets/shards/styles/shards-dashboards.1.1.0.min.css";
 
 const DefaultLayout = ({ children, noNavbar, noFooter }) => (
   <Container fluid>
