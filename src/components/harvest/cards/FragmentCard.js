@@ -39,7 +39,7 @@ class FragmentCard extends React.Component {
       noMedia: true,
       noCustomAttributes: true,
       fragmentCss: cssPath,
-      authToken: Store.getAuth().userToken
+      authToken: Store.getAuth().authToken
     }).then((w3doc) => {
       this.setState({...this.state, sampleUrl: sampleUrl, cssPath: cssPath, w3doc: w3doc})
     }).catch(function (ex) {

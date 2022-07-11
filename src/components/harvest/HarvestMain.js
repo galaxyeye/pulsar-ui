@@ -16,14 +16,14 @@ import {
 import PropTypes from "prop-types";
 import {getRestApiBaseURI} from "../../lib/api";
 import MainNavbar from "../layout/MainNavbar/MainNavbar";
-import getHotLinks from "../../data/hot-links";
+import getDefaultHotLinks from "../../data/hot-links";
 
 let auth = Store.getAuth()
 const clientTemplate = {
   username: auth.username,
   authToken: auth.authToken,
-  args: "-diagnose -vj",
-  apiEntry: getRestApiBaseURI() + "/api"
+  args: "-topLinks 40 -diagnose -vj",
+  apiEntry: getRestApiBaseURI()
 }
 
 let defaultHarvestStatus: HarvestTaskStatusType = {
@@ -53,7 +53,7 @@ class HarvestMain extends React.Component {
       message: "加载中 ...",
       clientTemplate: clientTemplate,
       harvestTaskStatus: defaultHarvestStatus,
-      hotLinks: getHotLinks(),
+      hotLinks: getDefaultHotLinks(),
     };
 
     this.timer = null;
@@ -75,6 +75,7 @@ class HarvestMain extends React.Component {
 
   componentDidMount() {
     this.submitTask(this.state.portalUrl, this.state.args)
+    // this.getHotLinks()
   }
 
   componentWillUnmount() {
@@ -125,6 +126,8 @@ class HarvestMain extends React.Component {
         return
       }
 
+      let lastTaskStatus = this.state.harvestTaskStatus
+
       HarvestApi.get(request).then((taskStatus) => {
         console.log("status:  " + taskStatus.statusCode
           + " " + taskStatus.ntotalPages
@@ -137,7 +140,12 @@ class HarvestMain extends React.Component {
           harvestTaskStatus: taskStatus
         })
 
-        if (taskStatus.statusCode === 200 || taskStatus.isDone) {
+        if (lastTaskStatus.statusCode < 202 && taskStatus.statusCode === 202) {
+          // The task is accepted for the first time
+          this.tick = 0
+        }
+
+        if (taskStatus.isDone) {
           this.clearRequestInterval()
         }
       }).catch(function (ex) {
@@ -148,7 +156,7 @@ class HarvestMain extends React.Component {
 
   getTables() {
     let taskStatus = this.state.harvestTaskStatus
-    if (taskStatus.statusCode === 200) {
+    if (taskStatus.statusCode === 200 && taskStatus.result) {
       return taskStatus.result.tables.filter((table) => !table.tableData.isCombined)
     } else {
       return []

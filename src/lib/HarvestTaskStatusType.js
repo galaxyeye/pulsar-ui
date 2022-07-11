@@ -43,5 +43,6 @@ export type HarvestTaskStatusType = {
   uuid: string,
   result: HarvestResultType,
   ntotalPages: number,
-  nsuccessPages: number
+  nsuccessPages: number,
+  isDone: boolean
 }

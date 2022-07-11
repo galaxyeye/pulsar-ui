@@ -4,7 +4,7 @@ import exports from "exports-loader"
 import {DELETE, GET, POST, PUT} from "./lib/api";
 
 export const HotLinkApi = {
-  get: GET("/x/links/hot")
+  get: GET("/xx/links/hot")
 };
 
 export const W3DocApi = {

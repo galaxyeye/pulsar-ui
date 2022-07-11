@@ -18,7 +18,7 @@ let auth = Store.getAuth()
 
 function getTaskStatusRequest(taskId) {
   return {
-    "authToken": auth.userToken,
+    "authToken": auth.authToken,
     "id": taskId
   }
 }
@@ -54,7 +54,7 @@ class ScrapePanel extends React.Component {
     }
 
     let auth = Store.getAuth()
-    let request = {authToken: auth.userToken, sql: sql}
+    let request = {authToken: auth.authToken, sql: sql}
     ScrapeApi.query(request).then((taskId) => {
       this.clearScrapeStatusTimer()
       this.setState({...this.state, taskId: taskId, scrapeResponse: null})
