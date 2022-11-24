@@ -5,6 +5,7 @@ import Errors from "./views/Errors";
 import HarvestHome from "./views/HarvestHome";
 import HarvestLayout from "./layouts/Harvest";
 import HarvestTest from "./views/HarvestTest";
+import {DefaultLayout} from "./layouts";
 
 export default [
   {
