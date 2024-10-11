@@ -38,7 +38,7 @@
     "shortid": "^2.2.14"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
     "build:prod": "cross-env REACT_APP_BASENAME=i REACT_APP_GAID=G-WVR0BFHCVV npm run build",
     "build": "cross-env REACT_APP_BASENAME=i react-scripts build",
     "test": "react-scripts test",
